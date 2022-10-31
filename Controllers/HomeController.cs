@@ -1,5 +1,7 @@
-﻿using System;
+﻿using NLog;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -8,8 +10,13 @@ namespace MedControlNet.Controllers
 {
     public class HomeController : Controller
     {
+
+        private static readonly Logger Logger = NLog.LogManager.GetCurrentClassLogger();
+
         public ActionResult Index()
         {
+            Console.WriteLine("hi Console");
+            Logger.Info("Hola mundo");
             return View();
         }
 
