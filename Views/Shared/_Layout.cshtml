@@ -3,31 +3,49 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <title>@ViewBag.Title - Control Médico</title>
     @Styles.Render("~/Content/css")
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <div class="container">
-            @Html.ActionLink("Control Médico", "Index", "Home", new { }, new { @class = "navbar-brand" })
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav">
-                    <li class="nav-item">@Html.ActionLink("Home", "Index", "Home", new { }, new { @class = "nav-link" })</li>
-                    <li class="nav-item">@Html.ActionLink("About", "About", "Home", new { }, new { @class = "nav-link" })</li>
-                    <li class="nav-item">@Html.ActionLink("Contact", "Contact", "Home", new { }, new { @class = "nav-link" })</li>
-                </ul>
+    <nav class="navbar navbar-dark bg-dark">
+        <div class="container-fluid">
+            <div class="d-flex d-inline-flex">
+                <button class="btn d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvas" aria-controls="offcanvas" aria-expanded="true" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                @Html.ActionLink("Control Médico", "Index", "Home", new { }, new { @class = "navbar-brand" })
             </div>
+
         </div>
     </nav>
-    <div class="container bg-white p-3">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - MedControlNet</p>
-        </footer>
+
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvas" aria-labelledby="offcanvasLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasLabel">Menú</h5>
+            <button type="button" class="btn-close text-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            @Html.Partial("_SideBar")
+        </div>
+    </div>
+
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-2 min-vh-100 d-none d-md-block bg-light border-1 border-end">
+                @Html.Partial("_SideBar")
+            </div>
+            <div class="col">
+                <div class="container pt-md-0 pt-4 bg-white">
+                    @RenderBody()
+                </div>
+
+                <hr />
+                <footer>
+                    <p>&copy; @DateTime.Now.Year - MedControlNet</p>
+                </footer>
+            </div>
+        </div>
     </div>
 
     @Scripts.Render("~/bundles/jquery")

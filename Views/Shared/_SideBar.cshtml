@@ -1,0 +1,15 @@
+﻿
+@{
+    var selected = ViewContext.RouteData.Values["Action"].ToString();
+}
+<ul class="nav nav-pills flex-column mt-md-3">
+    <li class="nav-item">
+        @Html.ActionLink("Inicio", "Index", "Home", new { }, new { @class = $"nav-link {( selected == "Index"? "active" : "" )}" })
+    </li>
+    <li class="nav-item">
+        @Html.ActionLink("Contacto", "Contact", "Home", new { }, new { @class = $"nav-link {(selected == "Contact" ? "active" : "")}" })
+    </li>
+    <li class="nav-item ">
+        @Html.ActionLink("Acerca", "About", "Home", new { }, new { @class = $"nav-link {(selected == "About" ? "active" : "")}" })
+    </li>
+</ul>
