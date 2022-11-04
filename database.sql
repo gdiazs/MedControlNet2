@@ -14,7 +14,7 @@ IF NOT EXISTS (SELECT * FROM sysobjects WHERE name = 'EspecialidadMedica')
 	CREATE TABLE dbo.EspecialidadMedica
 	(
 		EspecialidadMedicaID INT IDENTITY(1,1),
-		NombreEspecialidad VARCHAR,
+		NombreEspecialidad VARCHAR(100),
 		CONSTRAINT PK_EspecialidadMedica PRIMARY KEY  CLUSTERED 
 		(
 			EspecialidadMedicaID
@@ -27,7 +27,7 @@ IF NOT EXISTS (SELECT * FROM sysobjects WHERE name = 'Consultorio')
 	CREATE TABLE dbo.Consultorio
 	(
 		ConsultorioID INT IDENTITY(1,1),
-		NombreDeConsultorio VARCHAR,
+		NombreDeConsultorio VARCHAR(80),
 		CONSTRAINT PK_Consultorio PRIMARY KEY  CLUSTERED 
 		(
 			ConsultorioID
@@ -70,7 +70,8 @@ IF NOT EXISTS (SELECT * FROM sysobjects WHERE name = 'MedicoEspecialista')
 	CREATE TABLE dbo.MedicoEspecialista
 	(
 		MedicoEspecialistaID BIGINT IDENTITY(1,1),
-		Nombre VARCHAR,
+		Nombre VARCHAR(255),
+		EsTemporal BIT,
 		EspecialidadMedicaID INT, 
 		
 		CONSTRAINT PK_MedicoEspecialista PRIMARY KEY  CLUSTERED 
@@ -88,5 +89,31 @@ IF NOT EXISTS (SELECT * FROM sysobjects WHERE name = 'MedicoEspecialista')
 	GO
 GO
 
+INSERT INTO Consultorio
+		(NombreDeConsultorio)
+		VALUES 
+			('Arenal'),
+			('Barva'),
+			('Miravalles'),
+			('Tenorio'),
+			('Poas'),
+			('Irazu'),
+			('Turrialba'),
+			('Chato'),
+			('Orosi'),
+			('Platanar')
+GO
+
+
+INSERT INTO EspecialidadMedica
+           (NombreEspecialidad)
+     VALUES
+		('Medicina General'),
+		('Geriatría'),
+		('Oftalmología'),
+		('Urología'),
+		('Oncología'),
+		('Ginecología')
+GO
 
 

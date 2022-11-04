@@ -1,15 +1,23 @@
 ﻿
 @{
-    var selected = ViewContext.RouteData.Values["Action"].ToString();
+    var controller = ViewContext.RouteData.Values["Controller"];
+    var action = ViewContext.RouteData.Values["Action"];
+    var selected = $"{controller}/{action}";
 }
 <ul class="nav nav-pills flex-column mt-md-3">
     <li class="nav-item">
-        @Html.ActionLink("Inicio", "Index", "Home", new { }, new { @class = $"nav-link {( selected == "Index"? "active" : "" )}" })
+        @Html.ActionLink("Inicio", "Index", "Home", new { }, new { @class = $"nav-link {(selected == "Home/Index" ? "active" : "")}" })
     </li>
     <li class="nav-item">
-        @Html.ActionLink("Contacto", "Contact", "Home", new { }, new { @class = $"nav-link {(selected == "Contact" ? "active" : "")}" })
+        @Html.ActionLink("Gestión de Especialistas", "Index", "Especialistas", new { }, new { @class = $"nav-link {(selected == "Especialistas/Index" ? "active" : "")}" })
+    </li>
+    <li class="nav-item">
+        @Html.ActionLink("Control de Citas", "Index", "Citas", new { }, new { @class = $"nav-link {(selected == "Citas/Index" ? "active" : "")}" })
+    </li>
+    <li class="nav-item">
+        @Html.ActionLink("Gestión de Consultorios", "Index", "Consultorios", new { }, new { @class = $"nav-link {(selected == "Consultorios/Index" ? "active" : "")}" })
     </li>
     <li class="nav-item ">
-        @Html.ActionLink("Acerca", "About", "Home", new { }, new { @class = $"nav-link {(selected == "About" ? "active" : "")}" })
+        @Html.ActionLink("Acerca", "About", "Home", new { }, new { @class = $"nav-link {(selected == "Home/About" ? "active" : "")}" })
     </li>
 </ul>
