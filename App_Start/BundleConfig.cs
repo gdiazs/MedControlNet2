@@ -16,6 +16,9 @@ namespace MedControlNet
             bundles.Add(new Bundle("~/bundles/knockout").Include(
                       "~/Scripts/knockout-3.5.1.js"));
 
+            bundles.Add(new Bundle("~/bundles/medicos").Include(
+          "~/Scripts/Medicos.js"));
+
             bundles.Add(new Bundle("~/Content/css").Include(
                       "~/Content/bootstrap.min.css",
                       "~/Content/site.css"));

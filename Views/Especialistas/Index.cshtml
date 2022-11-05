@@ -27,3 +27,14 @@
 
 
 </div>
+
+@Scripts.Render("~/bundles/medicos")
+<script type="text/javascript">
+    (function () {
+        let medicosApi = Medicos();
+        medicosApi.obtenerMedicos().then(listaMedicos => {
+            console.log(listaMedicos);
+        });
+    })();
+
+</script>
