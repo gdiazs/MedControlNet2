@@ -70,7 +70,7 @@ IF NOT EXISTS (SELECT * FROM sysobjects WHERE name = 'Medico')
 	CREATE TABLE dbo.Medico
 	(
 		MedicoID INT IDENTITY(1,1),
-		Identificacion VARCHAR(30),
+		Identificacion VARCHAR(30) UNIQUE,
 		Nombre VARCHAR(255),
 		EsTemporal BIT,
 		EspecialidadID INT, 

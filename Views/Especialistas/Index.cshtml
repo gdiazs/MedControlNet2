@@ -4,11 +4,12 @@
 <div class="row mt-5">
     <div class="row">
         <div class="col-12">
+
+            <a href="#" data-bs-toggle="modal" data-bs-target="#agregar-especialista" class="btn btn-primary">Agregar especialista</a>
             <div class="card">
                 <div class="card-header">
                     <h5>Médicos Especialistas</h5>
                 </div>
-
                 <table class="table pt-3 table-hover">
                     <thead class="table-primary">
                         <tr>
@@ -18,9 +19,51 @@
                             <th scope="col">Especialidad</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody data-bind="foreach: medicosViewModel.listaMedicos">
+                        <tr>
+                            <td data-bind="text: $data.index"></td>
+                            <td data-bind="text: $data.identificacion"></td>
+                            <td data-bind="text: $data.nombre"></td>
+                            <td data-bind="text: $data.especialidad"></td>
+                        </tr>
                     </tbody>
                 </table>
+            </div>
+
+
+            <div id="agregar-especialista" class="modal fade" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Nuevo Especialista</h5>
+                            <button id="closeBtn" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <div class="mb-3">
+                                    <label for="identificacion" class="col-form-label">Identificación</label>
+                                    <input id="identificacion" type="text" class="form-control" data-bind="value: medicosViewModel.nuevoMedico.identificacion" />
+                                </div>
+                                <div class="mb-3">
+                                    <label for="nombre" class="col-form-label">Nombre</label>
+                                    <input id="nombre" type="text" class="form-control"  data-bind="value: medicosViewModel.nuevoMedico.nombre" />
+                                </div>
+                                <div class="mb-3">
+                                    <label for="nombre" class="col-form-label">Escoga la especialidad</label>
+                                    <select id="especialidad" class=form-select 
+                                            data-bind="value: medicosViewModel.nuevoMedico.especialidad,
+                                            options: medicosViewModel.listaEspecialidades,
+                                            optionsText: 'nombreEspecialidad'">
+                                    </select>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="button" class="btn btn-primary" data-bind="event: { click:  onGuardarMedicoClick}">Agregar</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -28,13 +71,82 @@
 
 </div>
 
-@Scripts.Render("~/bundles/medicos")
-<script type="text/javascript">
-    (function () {
-        let medicosApi = Medicos();
-        medicosApi.obtenerMedicos().then(listaMedicos => {
-            console.log(listaMedicos);
-        });
-    })();
 
+@Scripts.Render("~/bundles/knockout")
+@Scripts.Render("~/bundles/api")
+<script type="text/javascript">
+    let api = Api();
+
+    function mapMedico(data, index) {
+        return {
+            index,
+            identificacion: data.Identificacion,
+            nombre: data.Nombre,
+            especialidad: data.EspecialidadModel.NombreEspecialidad
+        }
+    }
+
+    function mapEspecialidad(data) {
+        return {
+            especialidadID: data.EspecialidadID,
+            nombreEspecialidad: data.NombreEspecialidad,
+        }
+    }
+
+    var medicosViewModel = {
+
+        listaMedicos: ko.observableArray([]),
+        listaEspecialidades: ko.observableArray([]),
+
+        nuevoMedico: {
+            identificacion: ko.observable(""),
+            nombre: ko.observable(""),
+            especialidad: ko.observable("")
+
+        }
+    }
+
+
+    function cargarMedicos() {
+
+        api.obtenerMedicos().then(listaMedicos => {
+
+            listaMedicos.forEach((medico, i) => {
+                medicosViewModel.listaMedicos.push(mapMedico(medico, i + 1));
+            });
+
+        });
+    }
+
+    function cargarEspecialidades() {
+        api.obtenerEspecialidades().then(listaEspecialidades => {
+            listaEspecialidades.forEach((especialidad) => {
+                medicosViewModel.listaEspecialidades.push(mapEspecialidad(especialidad));
+            })
+        });
+    }
+
+
+    function onGuardarMedicoClick() {
+
+        let nuevoMedico = {
+            identificacion: medicosViewModel.nuevoMedico.identificacion(),
+            nombre: medicosViewModel.nuevoMedico.nombre(),
+            especialidadId: medicosViewModel.nuevoMedico.especialidad().especialidadID
+        }
+
+        api.agregarMedico(nuevoMedico).then((data) => {
+            medicosViewModel.listaMedicos.push(mapMedico(data, medicosViewModel.listaMedicos().length + 1))
+            document.querySelector("#closeBtn").click();
+            medicosViewModel.nuevoMedico.nombre("");
+            medicosViewModel.nuevoMedico.identificacion("");
+            medicosViewModel.nuevoMedico.especialidad(-1);
+        });
+
+    }
+
+    cargarMedicos();
+    cargarEspecialidades();
+
+    ko.applyBindings(medicosViewModel);
 </script>

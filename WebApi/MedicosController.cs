@@ -30,7 +30,7 @@ namespace MedControlNet.WebApi
         }
 
         [HttpGet]
-        public List<Medico> Obtener() {
+        public List<MedicoModelo> Obtener() {
 
             Logger.Info("Obteniendo todos los médicos");
 
@@ -42,9 +42,9 @@ namespace MedControlNet.WebApi
         }
 
         [HttpPost]
-        public void Agregar(MedicoModelo medico) {
+        public MedicoModelo Agregar(MedicoModelo medico) {
             Logger.Info($"Se va a agregar el siguiente médico {medico.Nombre}");
-            _medicosServicios.AgregarMedico(medico);
+           return _medicosServicios.AgregarMedico(medico);
         }
     }
 }
