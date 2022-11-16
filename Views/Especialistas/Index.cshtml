@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "Gestión de consultorios";
+    ViewBag.Title = "Gestión de Especialistas";
 }
 <div class="row mt-5">
     <div class="row">
@@ -19,26 +19,27 @@
                 <div class="card-header">
                     <h5>Médicos Especialistas</h5>
                 </div>
-                <table class="table pt-3 table-hover">
-                    <thead class="table-primary">
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Identificación</th>
-                            <th scope="col">Nombre</th>
-                            <th scope="col">Especialidad</th>
-                        </tr>
-                    </thead>
-                    <tbody data-bind="foreach: medicosViewModel.listaMedicos">
-                        <tr>
-                            <td data-bind="text: $data.index"></td>
-                            <td data-bind="text: $data.identificacion"></td>
-                            <td data-bind="text: $data.nombre"></td>
-                            <td data-bind="text: $data.especialidad"></td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="table-responsive">
+                    <table class="table pt-3 table-hover">
+                        <thead class="table-primary">
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Identificación</th>
+                                <th scope="col">Nombre</th>
+                                <th scope="col">Especialidad</th>
+                            </tr>
+                        </thead>
+                        <tbody data-bind="foreach: medicosViewModel.listaMedicos">
+                            <tr>
+                                <td data-bind="text: $data.index"></td>
+                                <td data-bind="text: $data.identificacion"></td>
+                                <td data-bind="text: $data.nombre"></td>
+                                <td data-bind="text: $data.especialidad"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-
 
             <div id="agregar-especialista" class="modal fade" tabindex="-1">
                 <div class="modal-dialog">

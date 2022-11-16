@@ -202,6 +202,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\ConsultorioModelo.cs" />
     <Compile Include="Models\EspecialidadModel.cs" />
     <Compile Include="Models\MedicoModelo.cs" />
     <Compile Include="Models\MensajeError.cs" />
@@ -317,8 +318,9 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\_SideBar.cshtml" />
     <Content Include="Views\Citas\Index.cshtml" />
-    <Content Include="Views\Consultorios\Index.cshtml" />
     <Content Include="Views\Especialistas\Index.cshtml" />
+    <Content Include="Views\Consultorios\Edit.cshtml" />
+    <Content Include="Views\Consultorios\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

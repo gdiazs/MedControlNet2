@@ -1,10 +1,33 @@
-﻿@{
-    ViewBag.Title = "Gestión de consultorios";
+﻿@model IEnumerable<MedControlNet.Entities.Consultorio>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@Scripts.Render("~/bundles/knockout")
-<div class="row mt-5 ">
+<h2 class="mt-5">Todos los consultorios</h2>
 
-    Consultorios
+<table class="table ">
 
-</div>
+    <thead class="table-primary">
+        <tr>
+            <th scope="col">Número de consultorio</th>
+            <th scope="col">Opciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NumeroConsultorio)
+                </td>
+                <td>
+                    @Html.ActionLink("Editar", "Edit", new { id = item.ConsultorioID }, new {@class = "btn btn-secondary" })
+                </td>
+            </tr>
+        }
+
+    </tbody>
+
+</table>
