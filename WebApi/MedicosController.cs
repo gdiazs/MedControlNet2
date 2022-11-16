@@ -11,8 +11,10 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using System.Web.Http.Results;
 using MedControlNet.Entities;
+using MedControlNet.Exceptions;
 using MedControlNet.Models;
 using MedControlNet.Services;
+using Newtonsoft.Json;
 using NLog;
 
 namespace MedControlNet.WebApi
@@ -44,7 +46,22 @@ namespace MedControlNet.WebApi
         [HttpPost]
         public MedicoModelo Agregar(MedicoModelo medico) {
             Logger.Info($"Se va a agregar el siguiente médico {medico.Nombre}");
-           return _medicosServicios.AgregarMedico(medico);
+
+            try
+            {
+                return _medicosServicios.AgregarMedico(medico);
+            }
+            catch (MedicoExisteExcepcion ex) {
+                var mensajeError = new MensajeError()
+                {
+                    CodigoHttp = HttpStatusCode.BadRequest,
+                    Mensaje = ex.Message
+                };
+                throw new HttpResponseException( new HttpResponseMessage() { 
+                    Content = new StringContent( JsonConvert.SerializeObject(mensajeError)),
+                    StatusCode = HttpStatusCode.BadRequest
+                });
+            }
         }
     }
 }

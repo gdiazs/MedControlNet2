@@ -49,7 +49,7 @@ namespace MedControlNet.Services
                 }
                 catch (DbUpdateException ex) {
                     if (ex.InnerException.InnerException.Message.Contains("UNIQUE KEY")) {
-                        throw new MedicoExisteExcepcion($"El médico con cédula {nuevoMedico.Identificacion} ya existe", ex.InnerException.InnerException);
+                        throw new MedicoExisteExcepcion($"Ya existe un especialista con cédula: {nuevoMedico.Identificacion}", ex.InnerException.InnerException);
                     }
                 }
                

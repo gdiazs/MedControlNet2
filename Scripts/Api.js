@@ -17,6 +17,11 @@
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(nuevoMedico)
+        }).then(response => {
+            if (!response.ok) {
+                return response.json().then(data => { throw data })
+            }
+
         }).then(response => response.json());
 
         return response;

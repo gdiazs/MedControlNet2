@@ -5,7 +5,16 @@
     <div class="row">
         <div class="col-12">
 
-            <a href="#" data-bs-toggle="modal" data-bs-target="#agregar-especialista" class="btn btn-primary">Agregar especialista</a>
+            <!-- ko if: medicosViewModel.esError -->
+            <div class="alert alert-danger" role="alert">
+                <div data-bind="text: medicosViewModel.mensajeError"></div>
+            </div>
+            <!--/ko -->
+
+            <div class="text-end">
+                <a href="#" data-bs-toggle="modal" data-bs-target="#agregar-especialista" class="btn btn-primary mb-3">Agregar especialista</a>
+            </div>
+           
             <div class="card">
                 <div class="card-header">
                     <h5>Médicos Especialistas</h5>
@@ -46,11 +55,11 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="nombre" class="col-form-label">Nombre</label>
-                                    <input id="nombre" type="text" class="form-control"  data-bind="value: medicosViewModel.nuevoMedico.nombre" />
+                                    <input id="nombre" type="text" class="form-control" data-bind="value: medicosViewModel.nuevoMedico.nombre" />
                                 </div>
                                 <div class="mb-3">
                                     <label for="nombre" class="col-form-label">Escoga la especialidad</label>
-                                    <select id="especialidad" class=form-select 
+                                    <select id="especialidad" class=form-select
                                             data-bind="value: medicosViewModel.nuevoMedico.especialidad,
                                             options: medicosViewModel.listaEspecialidades,
                                             optionsText: 'nombreEspecialidad'">
@@ -95,6 +104,9 @@
 
     var medicosViewModel = {
 
+        esError: ko.observable(false),
+        mensajeError: ko.observable(""),
+
         listaMedicos: ko.observableArray([]),
         listaEspecialidades: ko.observableArray([]),
 
@@ -103,6 +115,13 @@
             nombre: ko.observable(""),
             especialidad: ko.observable("")
 
+        },
+
+        limpiarNuevoMedico: function () {
+
+            medicosViewModel.nuevoMedico.nombre("");
+            medicosViewModel.nuevoMedico.identificacion("");
+            medicosViewModel.nuevoMedico.especialidad(-1);
         }
     }
 
@@ -138,9 +157,13 @@
         api.agregarMedico(nuevoMedico).then((data) => {
             medicosViewModel.listaMedicos.push(mapMedico(data, medicosViewModel.listaMedicos().length + 1))
             document.querySelector("#closeBtn").click();
-            medicosViewModel.nuevoMedico.nombre("");
-            medicosViewModel.nuevoMedico.identificacion("");
-            medicosViewModel.nuevoMedico.especialidad(-1);
+            medicosViewModel.limpiarNuevoMedico();
+
+        }).catch((err) => {
+            medicosViewModel.esError(true);
+            medicosViewModel.mensajeError(err.Mensaje)
+            medicosViewModel.limpiarNuevoMedico();
+            document.querySelector("#closeBtn").click();
         });
 
     }
