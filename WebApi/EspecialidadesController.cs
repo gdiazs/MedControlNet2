@@ -1,4 +1,5 @@
-﻿using MedControlNet.Models;
+﻿using MedControlNet.Entities;
+using MedControlNet.Models;
 using MedControlNet.Services;
 using NLog;
 using System;
@@ -22,6 +23,7 @@ namespace MedControlNet.WebApi
         {
             _especialidadesServicio = especialidadesServicio;
         }
+
 
 
         [HttpGet]

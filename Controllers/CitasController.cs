@@ -1,5 +1,10 @@
-﻿using System;
+﻿using MedControlNet.Entities;
+using MedControlNet.Models;
+using MedControlNet.Services;
+using System;
 using System.Collections.Generic;
+using System.Data.Entity.Core.Common.CommandTrees.ExpressionBuilder;
+using System.Data.Entity.Core.Metadata.Edm;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -8,10 +13,75 @@ namespace MedControlNet.Controllers
 {
     public class CitasController : Controller
     {
-        // GET: Citas
+
+        private readonly CitasServicio _citasServicio;
+        private readonly ConsultoriosServicio _consultoriosServicio;
+        private readonly MedicosServicio _medicosServicio;
+
+        public CitasController(CitasServicio citasServicio, ConsultoriosServicio consultoriosServicio, MedicosServicio medicosServicio)
+        {
+            _citasServicio = citasServicio;
+            _consultoriosServicio = consultoriosServicio;
+            _medicosServicio = medicosServicio;
+        }
+
         public ActionResult Index()
         {
-            return View();
+            var medicosLista = _medicosServicio.ObtenerMedicos();
+            var items = medicosLista.Select(medico => new SelectListItem() { 
+                Text = $"{medico.Identificacion} - {medico.Nombre} - {medico.EspecialidadModel.NombreEspecialidad}",
+                Value = medico.MedicoId.ToString()
+            
+            }).ToList();
+
+
+            var citaModelo = new CitaModelo()
+            {
+                medicos = items,
+                consultorios = null
+            };
+
+            return View(citaModelo);
+        }
+
+        private string ObtenerEspecialidades(Consultorio consultorio) {
+            var especialidades = consultorio.Especialidads.Select( esp => esp.NombreEspecialidad ).ToList();
+            return $"{consultorio.NumeroConsultorio} ({String.Join(", ", especialidades)})";
+
+        }
+
+        [HttpPost]
+        public ActionResult Index(CitaFormularioModelo citaModelo)
+        {
+            var fechaSeleccionada = citaModelo.FechaCita;
+
+
+            if (NoEsHoraDeAlmuerzo(fechaSeleccionada))
+            {
+                TempData["MensajeError"] = $"La fecha seleccionada '{citaModelo.FechaCita}' no es válida. La hora de almuerzo es de las 12pm a 1pm ";
+            }
+
+            if (NoEsHorarioValido(fechaSeleccionada)) {
+                TempData["MensajeError"] = $"La fecha seleccionada '{citaModelo.FechaCita}' no es válida. El horario de atención 8am a 5pm. ";
+            }
+
+            return RedirectToAction("Index");
+        }
+
+        private bool NoEsHoraDeAlmuerzo(DateTime fechaSeleccionada)
+        {
+
+            return fechaSeleccionada.Hour >= 12 && fechaSeleccionada.Hour < 13;
+        }
+
+        private static bool NoEsHorarioValido(DateTime fechaSeleccionada)
+        {
+            var now = DateTime.Now;
+
+            DateTime inicio = new DateTime(now.Year, now.Month, now.Day, 08, 00, 00);
+            DateTime fin = new DateTime(now.Year, now.Month, now.Day, 16, 30, 00);
+
+            return !(fechaSeleccionada >= inicio && fechaSeleccionada <= fin);
         }
     }
 }

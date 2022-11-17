@@ -156,6 +156,7 @@
         }
 
         api.agregarMedico(nuevoMedico).then((data) => {
+            console.log(data);
             medicosViewModel.listaMedicos.push(mapMedico(data, medicosViewModel.listaMedicos().length + 1))
             document.querySelector("#closeBtn").click();
             medicosViewModel.limpiarNuevoMedico();

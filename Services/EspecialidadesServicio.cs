@@ -22,5 +22,14 @@ namespace MedControlNet.Services
                 }).ToList();
             }
         }
+
+        public Especialidad ObtenerEspecialidadPorId(int id)
+        {
+
+            using (var entities = new MedControlNetDBEntities())
+            {
+                return entities.Especialidads.Include("Consultorios").FirstOrDefault( especialidad => especialidad.EspecialidadID.Equals(id) );
+            }
+        }
     }
 }

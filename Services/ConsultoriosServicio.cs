@@ -83,7 +83,7 @@ namespace MedControlNet.Services
         public List<Consultorio> ObtenerConsultorios()
         {
             using (var db = new MedControlNetDBEntities()) {
-                return db.Consultorios.ToList();
+                return db.Consultorios.Include("Especialidads").ToList();
             }
         }
     }

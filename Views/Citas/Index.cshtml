@@ -2,9 +2,78 @@
     ViewBag.Title = "Control de Citas";
 }
 
-@Scripts.Render("~/bundles/knockout")
-<div class="row mt-5 ">
+@model MedControlNet.Models.CitaModelo
 
-    Citas
+@Scripts.Render("~/bundles/knockout")
+<div class="row">
+
+    <div class="col-6">
+        <div class="card mt-5">
+            <div class="card-header">
+                <h5>Nueva cita</h5>
+            </div>
+            <div class="card-body">
+
+                @using (Html.BeginForm())
+                {
+                    if (TempData["MensajeError"] != null)
+                    {
+                        <div class="alert alert-danger" role="alert">
+                            @TempData["MensajeError"]
+                        </div>
+                    }
+
+                    <div class="card">
+                        <div class="card-body">
+                            <h5>Paciente</h5>
+                            <div class="mt-3">Nombre del paciente</div>
+                            <div>
+                                <input type="text" id="nombrePaciente" name="nombrePaciente" class="form-control" />
+                            </div>
+                            <div class="mt-3">Nombre del paciente</div>
+                            <div>
+                                <input type="text" id="cedulaPaciente" name="cedulaPaciente" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card mt-3">
+                        <div class="card-body">
+                            <h5>Consultorio</h5>
+                            <div class="mt-3">Escoga un consultorio acorde a la especialidad</div>
+                            <div>
+                                @Html.DropDownList("NuevaEspecialidad", Model.medicos, new { @class = "form-select" })
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="card mt-3">
+                        <div class="card-body">
+                            <h5>Hora de la cita</h5>
+                            <div class="mt-3">Horario de atención de 8 AM a 5 PM (30 min por cita)</div>
+
+                            <div>
+                                <input type="datetime-local" id="fechaCita"
+                                       name="fechaCita" class="form-control">
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="text-end mt-3">
+                        <input class="btn btn-primary" type="submit" value="Guardar Cita" />
+                    </div>
+
+                }
+            </div>
+        </div>
+
+    </div>
 
 </div>
+<script>
+
+
+
+</script>

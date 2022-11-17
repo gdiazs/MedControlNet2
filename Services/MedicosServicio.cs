@@ -58,7 +58,7 @@ namespace MedControlNet.Services
 
             using (var entities = new MedControlNetDBEntities())
             {
-                var medico = entities.Medicos.Where((especialista) => especialista.Identificacion.Equals(especialista.Identificacion)).First();
+                var medico = entities.Medicos.Where((especialista) => especialista.Identificacion.Equals(medicoModelo.Identificacion)).First();
 
                 return new MedicoModelo
                 {
@@ -76,6 +76,15 @@ namespace MedControlNet.Services
             }
 
 
+        }
+
+        public Medico ObtenerMedicoPorId(int medicoId)
+        {
+            using (var db = new MedControlNetDBEntities()) {
+
+                return db.Medicos.Find(medicoId);
+                
+            }
         }
     }
 }

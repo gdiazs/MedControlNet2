@@ -21,6 +21,7 @@
             if (!response.ok) {
                 return response.json().then(data => { throw data })
             }
+            return response;
 
         }).then(response => response.json());
 
