@@ -11,5 +11,10 @@ namespace MedControlNet.Models
         public string CedulaPaciente { set; get; }
 
         public DateTime FechaCita { set; get; }
+
+        public string ConsultorioId { set; get; }
+        public string MedicoEspecialista { set; get; }
+
+        public decimal monto { set; get; }
     }
 }

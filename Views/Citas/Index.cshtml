@@ -7,7 +7,7 @@
 @Scripts.Render("~/bundles/knockout")
 <div class="row">
 
-    <div class="col-6">
+    <div class="col-6 offset-3">
         <div class="card mt-5">
             <div class="card-header">
                 <h5>Nueva cita</h5>
@@ -38,12 +38,16 @@
                     </div>
                     <div class="card mt-3">
                         <div class="card-body">
-                            <h5>Consultorio</h5>
-                            <div class="mt-3">Escoga un consultorio acorde a la especialidad</div>
+                            <h5>Especialista y Consultorio</h5>
+                            <div class="mt-3">Escoga un especialista</div>
                             <div>
-                                @Html.DropDownList("NuevaEspecialidad", Model.medicos, new { @class = "form-select" })
+                                @Html.DropDownList("MedicoEspecialista", Model.medicos, new { @class = "form-select", @id = "medicoSelect" })
                             </div>
-
+                            <div class="mt-3">Escoga un consultorio</div>
+                            <div>
+                                <select id="consultorioId" name="consultorioId" class="form-select">
+                                </select>
+                            </div>
                         </div>
                     </div>
 
@@ -60,6 +64,17 @@
                         </div>
                     </div>
 
+                    <div class="card mt-3">
+                        <div class="card-body">
+                            <h5>Costo</h5>
+                            <div class="mt-3">Escriba el monto</div>
+
+                            <div>
+                                <input type="text" id="monto" name="monto" class="form-control"/>
+
+                            </div>
+                        </div>
+                    </div>
 
                     <div class="text-end mt-3">
                         <input class="btn btn-primary" type="submit" value="Guardar Cita" />
@@ -73,7 +88,30 @@
 
 </div>
 <script>
+    (function () {
 
+        document.querySelector("#medicoSelect").addEventListener("change", (e) => {
+            let medicoId = e.target.value;
+
+            fetch(`/api/consultorios?medicoId=${medicoId}`)
+                .then(resp => resp.json())
+                .then((data) => {
+                    var options = '<option value="-1">Seleccione</option>';
+
+                    data.forEach(consultorio => {
+                        options += `<option value=${consultorio.ConsultorioID}>${consultorio.NumeroConsultorio}</option>`
+
+                    })
+
+                   document.querySelector("#consultorioId").innerHTML = options;
+                    
+                });
+
+        });
+
+
+
+    })();
 
 
 </script>

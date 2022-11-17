@@ -29,12 +29,17 @@ namespace MedControlNet.Controllers
         {
             var medicosLista = _medicosServicio.ObtenerMedicos();
             var items = medicosLista.Select(medico => new SelectListItem() { 
-                Text = $"{medico.Identificacion} - {medico.Nombre} - {medico.EspecialidadModel.NombreEspecialidad}",
+                Text = $"{medico.Nombre} ({medico.EspecialidadModel.NombreEspecialidad})",
                 Value = medico.MedicoId.ToString()
             
             }).ToList();
 
 
+            items.Insert(0, new SelectListItem()
+            {
+                Text = "Seleccione",
+                Value = "-1"
+            });
             var citaModelo = new CitaModelo()
             {
                 medicos = items,
