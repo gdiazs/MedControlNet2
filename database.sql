@@ -111,6 +111,7 @@ IF NOT EXISTS (SELECT * FROM sysobjects WHERE name = 'Cita')
 		CitaID INT IDENTITY(1,1),
 		PacienteID INT, 
 		MedicoID INT,
+		EspecialidadID INT,
 		HoraCita DATETIME,
 		Costo DECIMAL(19,4),
 		CONSTRAINT PK_Cita PRIMARY KEY  CLUSTERED 
@@ -132,6 +133,13 @@ IF NOT EXISTS (SELECT * FROM sysobjects WHERE name = 'Cita')
 
 		) REFERENCES dbo.Medico (
 			MedicoID
+		),
+		CONSTRAINT FK_Cita_EspecialidadID FOREIGN KEY 
+		(
+			EspecialidadID
+
+		) REFERENCES dbo.Especialidad (
+			EspecialidadID
 		)
 	)
 	GO
