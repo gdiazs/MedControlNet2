@@ -5,10 +5,10 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="233a6c6e0b484c91aa1a59c921da480c" Name="Diagram1">
-        <EntityTypeShape EntityType="MedControlNetDBModel.Cita" Width="1.5" PointX="7.5" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="MedControlNetDBModel.Consultorio" Width="1.5" PointX="0.75" PointY="1.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="MedControlNetDBModel.Especialidad" Width="1.5" PointX="3" PointY="1.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="MedControlNetDBModel.Medico" Width="1.5" PointX="5.25" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="MedControlNetDBModel.Cita" Width="1.5" PointX="9.625" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="MedControlNetDBModel.Consultorio" Width="1.5" PointX="0.5" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="MedControlNetDBModel.Especialidad" Width="1.5" PointX="2.875" PointY="0.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="MedControlNetDBModel.Medico" Width="1.5" PointX="5.875" PointY="0.625" IsExpanded="true" />
         <EntityTypeShape EntityType="MedControlNetDBModel.Paciente" Width="1.5" PointX="5.25" PointY="5.25" IsExpanded="true" />
         <AssociationConnector Association="MedControlNetDBModel.FK_Cita_MedicoID" ManuallyRouted="false" />
         <AssociationConnector Association="MedControlNetDBModel.FK_Cita_PacienteID" ManuallyRouted="false" />

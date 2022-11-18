@@ -15,13 +15,11 @@ namespace MedControlNet.Controllers
     {
 
         private readonly CitasServicio _citasServicio;
-        private readonly ConsultoriosServicio _consultoriosServicio;
         private readonly MedicosServicio _medicosServicio;
 
-        public CitasController(CitasServicio citasServicio, ConsultoriosServicio consultoriosServicio, MedicosServicio medicosServicio)
+        public CitasController(CitasServicio citasServicio, MedicosServicio medicosServicio)
         {
             _citasServicio = citasServicio;
-            _consultoriosServicio = consultoriosServicio;
             _medicosServicio = medicosServicio;
         }
 
@@ -73,13 +71,18 @@ namespace MedControlNet.Controllers
             if (NoEsHoraDeAlmuerzo(fechaSeleccionada))
             {
                 TempData["MensajeError"] = $"La fecha seleccionada '{citaModelo.FechaCita}' no es válida. La hora de almuerzo es de las 12pm a 1pm ";
+                TempData["form"] = citaModelo;
             }
 
             if (NoEsHorarioValido(fechaSeleccionada)) {
                 TempData["MensajeError"] = $"La fecha seleccionada '{citaModelo.FechaCita}' no es válida. El horario de atención 8am a 5pm. ";
+                TempData["form"] = citaModelo;
             }
 
-            TempData["form"] = citaModelo;
+
+            TempData["form"] = null;
+            _citasServicio.AgregarCita(citaModelo);
+            TempData["MensajeExito"] = $"La cita de {citaModelo.NombrePaciente} con cédula {citaModelo.CedulaPaciente} se ha agendado satisfactoriamente";
 
             return RedirectToAction("Index");
         }

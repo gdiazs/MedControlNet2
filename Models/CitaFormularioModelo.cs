@@ -15,6 +15,6 @@ namespace MedControlNet.Models
         public string ConsultorioId { set; get; }
         public string MedicoEspecialista { set; get; }
 
-        public decimal monto { set; get; }
+        public decimal Monto { set; get; }
     }
 }
