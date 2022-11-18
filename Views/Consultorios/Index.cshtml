@@ -5,29 +5,48 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2 class="mt-5">Todos los consultorios</h2>
+<div class="row">
+    <div class="col-7">
 
-<table class="table ">
 
-    <thead class="table-primary">
-        <tr>
-            <th scope="col">Número de consultorio</th>
-            <th scope="col">Opciones</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.NumeroConsultorio)
-                </td>
-                <td>
-                    @Html.ActionLink("Editar", "Edit", new { id = item.ConsultorioID }, new {@class = "btn btn-secondary" })
-                </td>
-            </tr>
-        }
 
-    </tbody>
+        <h2 class="mt-5">Todos los consultorios</h2>
 
-</table>
+        <table class="table ">
+
+            <thead class="table-primary">
+                <tr>
+                    <th scope="col">Número de consultorio</th>
+                    <th scope="col">Opciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @{
+                                var especialidades = item.Especialidads.Select(esp => esp.NombreEspecialidad).ToList();
+                                var especialidadesAMostrar = string.Join(", ", especialidades);
+
+                            }
+                            @Html.DisplayFor(modelItem => item.NumeroConsultorio)
+                            @if (especialidadesAMostrar.Length > 0)
+                            {
+                                <span class="ms-2 fw-bold">(@especialidadesAMostrar)</span>
+                            }
+
+
+                        </td>
+                        <td>
+                            @Html.ActionLink("Editar", "Edit", new { id = item.ConsultorioID }, new { @class = "btn btn-secondary" })
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+    </div>
+
+</div>

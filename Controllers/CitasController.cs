@@ -58,7 +58,7 @@ namespace MedControlNet.Controllers
 
         private string ObtenerEspecialidades(Consultorio consultorio) {
             var especialidades = consultorio.Especialidads.Select( esp => esp.NombreEspecialidad ).ToList();
-            return $"{consultorio.NumeroConsultorio} ({String.Join(", ", especialidades)})";
+            return $"{consultorio.NumeroConsultorio} ({string.Join(", ", especialidades)})";
 
         }
 
