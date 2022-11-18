@@ -18,4 +18,10 @@
     <li class="nav-item">
         @Html.ActionLink("Control de Citas", "Index", "Citas", new { }, new { @class = $"nav-link {(selected == "Citas/Index" ? "active" : "")}" })
     </li>
+    <hr />
+
+    <li class="nav-item">
+        @Html.ActionLink("Reportes", "Index", "Reportes", new { }, new { @class = $"nav-link {(selected == "Reportes/Index" ? "active" : "")}" })
+    </li>
+
 </ul>
