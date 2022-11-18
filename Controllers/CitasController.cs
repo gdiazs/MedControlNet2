@@ -93,7 +93,7 @@ namespace MedControlNet.Controllers
             return fechaSeleccionada.Hour >= 12 && fechaSeleccionada.Hour < 13;
         }
 
-        private static bool NoEsHorarioValido(DateTime fechaSeleccionada)
+        private bool NoEsHorarioValido(DateTime fechaSeleccionada)
         {
             var now = DateTime.Now;
 

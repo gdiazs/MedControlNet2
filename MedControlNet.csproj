@@ -208,14 +208,17 @@
     <Compile Include="Models\ConsultorioModelo.cs" />
     <Compile Include="Models\ConsultoriosEspecialidadModelo.cs" />
     <Compile Include="Models\EspecialidadModel.cs" />
+    <Compile Include="Models\MedicoCitasReporte.cs" />
     <Compile Include="Models\MedicoModelo.cs" />
     <Compile Include="Models\MensajeError.cs" />
+    <Compile Include="Models\ReportesModelo.cs" />
     <Compile Include="Models\UnityResolver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\CitasServicio.cs" />
     <Compile Include="Services\ConsultoriosServicio.cs" />
     <Compile Include="Services\EspecialidadesServicio.cs" />
     <Compile Include="Services\MedicosServicio.cs" />
+    <Compile Include="Services\ReportesServicio.cs" />
     <Compile Include="WebApi\ConsultoriosController.cs" />
     <Compile Include="WebApi\EspecialidadesController.cs" />
     <Compile Include="WebApi\MedicosController.cs" />
