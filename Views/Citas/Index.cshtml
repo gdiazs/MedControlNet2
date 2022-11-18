@@ -13,7 +13,6 @@
                 <h5>Nueva cita</h5>
             </div>
             <div class="card-body">
-
                 @using (Html.BeginForm())
                 {
                     if (TempData["MensajeError"] != null)
@@ -28,11 +27,11 @@
                             <h5>Paciente</h5>
                             <div class="mt-3">Nombre del paciente</div>
                             <div>
-                                <input type="text" id="nombrePaciente" name="nombrePaciente" class="form-control" />
+                                <input type="text" id="nombrePaciente" name="nombrePaciente" class="form-control" value="@Model.CitaFormularioModelo.NombrePaciente" />
                             </div>
-                            <div class="mt-3">Nombre del paciente</div>
+                            <div class="mt-3">Cédula del paciente</div>
                             <div>
-                                <input type="text" id="cedulaPaciente" name="cedulaPaciente" class="form-control" />
+                                <input type="number" id="cedulaPaciente" name="cedulaPaciente" class="form-control" value="@Model.CitaFormularioModelo.CedulaPaciente" />
                             </div>
                         </div>
                     </div>
@@ -46,6 +45,7 @@
                             <div class="mt-3">Escoga un consultorio</div>
                             <div>
                                 <select id="consultorioId" name="consultorioId" class="form-select">
+                                    <option value="-1">Seleccione</option>
                                 </select>
                             </div>
                         </div>
@@ -58,7 +58,7 @@
 
                             <div>
                                 <input type="datetime-local" id="fechaCita"
-                                       name="fechaCita" class="form-control">
+                                       name="fechaCita" class="form-control" value="@Model.CitaFormularioModelo.FechaCita.ToString("yyyy-MM-ddTHH:mm:ss")">
 
                             </div>
                         </div>
@@ -70,7 +70,7 @@
                             <div class="mt-3">Escriba el monto</div>
 
                             <div>
-                                <input type="text" id="monto" name="monto" class="form-control"/>
+                                <input type="text" id="monto" name="monto" class="form-control" value="@Model.CitaFormularioModelo.monto" />
 
                             </div>
                         </div>
@@ -103,11 +103,22 @@
 
                     })
 
-                   document.querySelector("#consultorioId").innerHTML = options;
-                    
+                    document.querySelector("#consultorioId").innerHTML = options;
+                    document.querySelector("#consultorioId").value = '@Model.CitaFormularioModelo.ConsultorioId'
+
                 });
 
         });
+
+        setTimeout(() => {
+            var consultorio = "@Model.CitaFormularioModelo.ConsultorioId";
+            var select = document.querySelector("#medicoSelect");
+            var options = document.querySelector("#medicoSelect option");
+            if (consultorio.length > 0) {
+               select.dispatchEvent(new Event("change"));
+            }
+
+        }, 200)
 
 
 

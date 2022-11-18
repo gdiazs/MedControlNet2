@@ -10,5 +10,7 @@ namespace MedControlNet.Models
     {
         public IEnumerable<SelectListItem> medicos { set; get; }
         public IEnumerable<SelectListItem> consultorios { set; get; }
+
+        public CitaFormularioModelo CitaFormularioModelo { set; get; }
     }
 }

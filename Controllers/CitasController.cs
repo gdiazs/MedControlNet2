@@ -27,12 +27,20 @@ namespace MedControlNet.Controllers
 
         public ActionResult Index()
         {
+            var citaFormulario = TempData["form"] != null ? (CitaFormularioModelo)TempData["form"] : new CitaFormularioModelo();
+
             var medicosLista = _medicosServicio.ObtenerMedicos();
             var items = medicosLista.Select(medico => new SelectListItem() { 
+
+                Selected = medico.MedicoId + "" == citaFormulario.MedicoEspecialista,
                 Text = $"{medico.Nombre} ({medico.EspecialidadModel.NombreEspecialidad})",
                 Value = medico.MedicoId.ToString()
             
             }).ToList();
+
+            if (citaFormulario.FechaCita < DateTime.Now) {
+                citaFormulario.FechaCita = DateTime.Now;
+            }
 
 
             items.Insert(0, new SelectListItem()
@@ -43,7 +51,8 @@ namespace MedControlNet.Controllers
             var citaModelo = new CitaModelo()
             {
                 medicos = items,
-                consultorios = null
+                consultorios = null,
+                CitaFormularioModelo = citaFormulario
             };
 
             return View(citaModelo);
@@ -70,6 +79,8 @@ namespace MedControlNet.Controllers
                 TempData["MensajeError"] = $"La fecha seleccionada '{citaModelo.FechaCita}' no es válida. El horario de atención 8am a 5pm. ";
             }
 
+            TempData["form"] = citaModelo;
+
             return RedirectToAction("Index");
         }
 
@@ -83,8 +94,8 @@ namespace MedControlNet.Controllers
         {
             var now = DateTime.Now;
 
-            DateTime inicio = new DateTime(now.Year, now.Month, now.Day, 08, 00, 00);
-            DateTime fin = new DateTime(now.Year, now.Month, now.Day, 16, 30, 00);
+            var inicio = new DateTime(now.Year, now.Month, now.Day, 08, 00, 00);
+            var fin = new DateTime(now.Year, now.Month, now.Day, 16, 30, 00);
 
             return !(fechaSeleccionada >= inicio && fechaSeleccionada <= fin);
         }
