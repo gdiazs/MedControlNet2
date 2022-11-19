@@ -9,7 +9,7 @@
         <EntityTypeShape EntityType="MedControlNetDBModel.Consultorio" Width="1.5" PointX="0.5" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="MedControlNetDBModel.Especialidad" Width="1.5" PointX="2.875" PointY="0.625" IsExpanded="true" />
         <EntityTypeShape EntityType="MedControlNetDBModel.Medico" Width="1.5" PointX="5.875" PointY="0.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="MedControlNetDBModel.Paciente" Width="1.5" PointX="5.25" PointY="5.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="MedControlNetDBModel.Paciente" Width="1.5" PointX="3.875" PointY="3.625" IsExpanded="true" />
         <AssociationConnector Association="MedControlNetDBModel.FK_Cita_MedicoID" ManuallyRouted="false" />
         <AssociationConnector Association="MedControlNetDBModel.FK_Cita_PacienteID" ManuallyRouted="false" />
         <AssociationConnector Association="MedControlNetDBModel.FK_Medico_EspecialidadID" ManuallyRouted="false" />

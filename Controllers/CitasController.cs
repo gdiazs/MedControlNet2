@@ -1,6 +1,7 @@
 ﻿using MedControlNet.Entities;
 using MedControlNet.Models;
 using MedControlNet.Services;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity.Core.Common.CommandTrees.ExpressionBuilder;
@@ -13,6 +14,7 @@ namespace MedControlNet.Controllers
 {
     public class CitasController : Controller
     {
+        private static readonly Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
         private readonly CitasServicio _citasServicio;
         private readonly MedicosServicio _medicosServicio;
@@ -28,15 +30,17 @@ namespace MedControlNet.Controllers
             var citaFormulario = TempData["form"] != null ? (CitaFormularioModelo)TempData["form"] : new CitaFormularioModelo();
 
             var medicosLista = _medicosServicio.ObtenerMedicos();
-            var items = medicosLista.Select(medico => new SelectListItem() { 
+            var items = medicosLista.Select(medico => new SelectListItem()
+            {
 
                 Selected = medico.MedicoId + "" == citaFormulario.MedicoEspecialista,
                 Text = $"{medico.Nombre} ({medico.EspecialidadModel.NombreEspecialidad})",
                 Value = medico.MedicoId.ToString()
-            
+
             }).ToList();
 
-            if (citaFormulario.FechaCita < DateTime.Now) {
+            if (citaFormulario.FechaCita < DateTime.Now)
+            {
                 citaFormulario.FechaCita = DateTime.Now;
             }
 
@@ -56,8 +60,9 @@ namespace MedControlNet.Controllers
             return View(citaModelo);
         }
 
-        private string ObtenerEspecialidades(Consultorio consultorio) {
-            var especialidades = consultorio.Especialidads.Select( esp => esp.NombreEspecialidad ).ToList();
+        private string ObtenerEspecialidades(Consultorio consultorio)
+        {
+            var especialidades = consultorio.Especialidads.Select(esp => esp.NombreEspecialidad).ToList();
             return $"{consultorio.NumeroConsultorio} ({string.Join(", ", especialidades)})";
 
         }
@@ -72,17 +77,27 @@ namespace MedControlNet.Controllers
             {
                 TempData["MensajeError"] = $"La fecha seleccionada '{citaModelo.FechaCita}' no es válida. La hora de almuerzo es de las 12pm a 1pm ";
                 TempData["form"] = citaModelo;
+                return  RedirectToAction("Index");
             }
 
-            if (NoEsHorarioValido(fechaSeleccionada)) {
+            if (NoEsHorarioValido(fechaSeleccionada))
+            {
                 TempData["MensajeError"] = $"La fecha seleccionada '{citaModelo.FechaCita}' no es válida. El horario de atención 8am a 5pm. ";
                 TempData["form"] = citaModelo;
+                return  RedirectToAction("Index");
             }
 
+            try
+            {
+                TempData["form"] = null;
+                _citasServicio.AgregarCita(citaModelo);
+                TempData["MensajeExito"] = $"La cita de {citaModelo.NombrePaciente} con cédula {citaModelo.CedulaPaciente} se ha agendado satisfactoriamente";
+            }
+            catch (Exception ex) {
+                TempData["MensajeExito"] = null;
+                Logger.Error("Error al agregar nueva cita", ex);
+            }
 
-            TempData["form"] = null;
-            _citasServicio.AgregarCita(citaModelo);
-            TempData["MensajeExito"] = $"La cita de {citaModelo.NombrePaciente} con cédula {citaModelo.CedulaPaciente} se ha agendado satisfactoriamente";
 
             return RedirectToAction("Index");
         }
