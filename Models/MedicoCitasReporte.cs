@@ -8,7 +8,7 @@ namespace MedControlNet.Models
 {
     public class MedicoCitasReporte
     {
-        public Medico Medico { set; get;}
+        public string Medico { set; get;}
         public decimal PorcenajeAtencion { set; get; }
     }
 }

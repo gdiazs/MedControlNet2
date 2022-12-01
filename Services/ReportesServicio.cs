@@ -48,6 +48,26 @@ namespace MedControlNet.Services
             }
         }
 
+        public List<CitaReporteJson> ObtenerCitasAtendidasSinFormato()
+        {
+            using (var db = new MedControlNetDBEntities())
+            {
+                var ahora = DateTime.Now;
+                var citas = db.Citas.Where(cita => cita.HoraCita <= ahora).ToList();
+
+                return db.Citas.Where(cita => cita.HoraCita <= ahora)
+                    .Select(cita => new CitaReporteJson()
+                    {
+                        Paciente = cita.Paciente.Nombre,
+                        HoraCita = cita.HoraCita.Value,
+                        Medico = cita.Medico.Nombre,
+                        Costo = cita.Costo.Value
+
+                    })
+                    .ToList();
+            }
+        }
+
         public List<Consultorio> ObtenerListaEspecialidadesPorConsultorios()
         {
             using (var db = new MedControlNetDBEntities())
@@ -56,7 +76,8 @@ namespace MedControlNet.Services
             }
         }
 
-        public int ObtenerConteoIngresos() {
+        public int ObtenerConteoIngresos()
+        {
             using (var db = new MedControlNetDBEntities())
             {
                 return db.Citas.ToList().Count;
@@ -76,7 +97,8 @@ namespace MedControlNet.Services
 
             decimal conteoEspecialidad = this.ObtenerConteoDeEspecialidades();
 
-            using (var db = new MedControlNetDBEntities()) {
+            using (var db = new MedControlNetDBEntities())
+            {
                 decimal especialidadesAtendidas = db.Citas.Select(citas => citas.Medico.Especialidad).Count();
 
                 decimal result = (especialidadesAtendidas / conteoEspecialidad);
@@ -96,12 +118,14 @@ namespace MedControlNet.Services
 
                 var medicoCitas = new List<MedicoCitasReporte>();
 
-                foreach (var medico in medicos) { 
+                foreach (var medico in medicos)
+                {
                     decimal citasAtendidas = medico.Citas.Count();
                     decimal result = (citasAtendidas / conteoCitas) * 100;
 
-                    medicoCitas.Add(new MedicoCitasReporte { 
-                        Medico = medico,
+                    medicoCitas.Add(new MedicoCitasReporte
+                    {
+                        Medico = medico.Nombre,
                         PorcenajeAtencion = result
 
                     });
