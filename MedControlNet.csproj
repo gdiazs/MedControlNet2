@@ -168,6 +168,7 @@
     <Compile Include="Controllers\ConsultoriosController.cs" />
     <Compile Include="Controllers\EspecialistasController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\InventariosController.cs" />
     <Compile Include="Controllers\ReportesController.cs" />
     <Compile Include="Entities\Cita.cs">
       <DependentUpon>MedControlNetDB.tt</DependentUpon>
@@ -176,6 +177,9 @@
       <DependentUpon>MedControlNetDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\Especialidad.cs">
+      <DependentUpon>MedControlNetDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\Inventario.cs">
       <DependentUpon>MedControlNetDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\MedControlNetDB.Context.cs">
@@ -210,6 +214,7 @@
     <Compile Include="Models\ConsultoriosEspecialidadModelo.cs" />
     <Compile Include="Models\ConsultoriosReporteJson.cs" />
     <Compile Include="Models\EspecialidadModel.cs" />
+    <Compile Include="Models\InventarioModelo.cs" />
     <Compile Include="Models\MedicoCitasReporte.cs" />
     <Compile Include="Models\MedicoModelo.cs" />
     <Compile Include="Models\MensajeError.cs" />
@@ -220,6 +225,7 @@
     <Compile Include="Services\CitasServicio.cs" />
     <Compile Include="Services\ConsultoriosServicio.cs" />
     <Compile Include="Services\EspecialidadesServicio.cs" />
+    <Compile Include="Services\InventariosServicio.cs" />
     <Compile Include="Services\MedicosServicio.cs" />
     <Compile Include="Services\ReportesServicio.cs" />
     <Compile Include="WebApi\ConsultoriosController.cs" />
@@ -335,6 +341,9 @@
     <Content Include="Views\Consultorios\Edit.cshtml" />
     <Content Include="Views\Consultorios\Index.cshtml" />
     <Content Include="Views\Reportes\Index.cshtml" />
+    <Content Include="Views\Inventarios\Index.cshtml" />
+    <Content Include="Views\Inventarios\Create.cshtml" />
+    <Content Include="Views\Inventarios\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

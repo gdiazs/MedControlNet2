@@ -39,6 +39,19 @@
           <Property Name="EspecialidadID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="NombreEspecialidad" Type="varchar" MaxLength="100" />
         </EntityType>
+        <EntityType Name="Inventario">
+          <Key>
+            <PropertyRef Name="InventarioID" />
+          </Key>
+          <Property Name="InventarioID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NumeroActivo" Type="int" />
+          <Property Name="Nombre" Type="varchar" MaxLength="30" />
+          <Property Name="Serie" Type="varchar" MaxLength="30" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="200" />
+          <Property Name="FechaDeCompra" Type="datetime" />
+          <Property Name="EspecialidadID" Type="int" />
+          <Property Name="ConsultorioID" Type="int" />
+        </EntityType>
         <EntityType Name="Medico">
           <Key>
             <PropertyRef Name="MedicoID" />
@@ -105,6 +118,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Inventario_ConsultorioID">
+          <End Role="Consultorio" Type="Self.Consultorio" Multiplicity="0..1" />
+          <End Role="Inventario" Type="Self.Inventario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Consultorio">
+              <PropertyRef Name="ConsultorioID" />
+            </Principal>
+            <Dependent Role="Inventario">
+              <PropertyRef Name="ConsultorioID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Inventario_EspecialidadID">
+          <End Role="Especialidad" Type="Self.Especialidad" Multiplicity="0..1" />
+          <End Role="Inventario" Type="Self.Inventario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Especialidad">
+              <PropertyRef Name="EspecialidadID" />
+            </Principal>
+            <Dependent Role="Inventario">
+              <PropertyRef Name="EspecialidadID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Medico_EspecialidadID">
           <End Role="Especialidad" Type="Self.Especialidad" Multiplicity="0..1" />
           <End Role="Medico" Type="Self.Medico" Multiplicity="*" />
@@ -122,6 +159,7 @@
           <EntitySet Name="Consultorio" EntityType="Self.Consultorio" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ConsultorioEspecialidad" EntityType="Self.ConsultorioEspecialidad" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Especialidad" EntityType="Self.Especialidad" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Inventario" EntityType="Self.Inventario" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Medico" EntityType="Self.Medico" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Paciente" EntityType="Self.Paciente" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_Cita_MedicoID" Association="Self.FK_Cita_MedicoID">
@@ -139,6 +177,14 @@
           <AssociationSet Name="FK_ConsultorioEspecialidad_EspecialidadID" Association="Self.FK_ConsultorioEspecialidad_EspecialidadID">
             <End Role="Especialidad" EntitySet="Especialidad" />
             <End Role="ConsultorioEspecialidad" EntitySet="ConsultorioEspecialidad" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Inventario_ConsultorioID" Association="Self.FK_Inventario_ConsultorioID">
+            <End Role="Consultorio" EntitySet="Consultorio" />
+            <End Role="Inventario" EntitySet="Inventario" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Inventario_EspecialidadID" Association="Self.FK_Inventario_EspecialidadID">
+            <End Role="Especialidad" EntitySet="Especialidad" />
+            <End Role="Inventario" EntitySet="Inventario" />
           </AssociationSet>
           <AssociationSet Name="FK_Medico_EspecialidadID" Association="Self.FK_Medico_EspecialidadID">
             <End Role="Especialidad" EntitySet="Especialidad" />
@@ -170,6 +216,7 @@
           <Property Name="ConsultorioID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="NumeroConsultorio" Type="Int32" />
           <NavigationProperty Name="Especialidads" Relationship="Self.ConsultorioEspecialidad" FromRole="Consultorio" ToRole="Especialidad" />
+          <NavigationProperty Name="Inventarios" Relationship="MedControlNetDBModel.FK_Inventario_ConsultorioID" FromRole="Consultorio" ToRole="Inventario" />
         </EntityType>
         <EntityType Name="Especialidad">
           <Key>
@@ -179,6 +226,7 @@
           <Property Name="NombreEspecialidad" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Medicos" Relationship="Self.FK_Medico_EspecialidadID" FromRole="Especialidad" ToRole="Medico" />
           <NavigationProperty Name="Consultorios" Relationship="Self.ConsultorioEspecialidad" FromRole="Especialidad" ToRole="Consultorio" />
+          <NavigationProperty Name="Inventarios" Relationship="MedControlNetDBModel.FK_Inventario_EspecialidadID" FromRole="Especialidad" ToRole="Inventario" />
         </EntityType>
         <EntityType Name="Medico">
           <Key>
@@ -263,8 +311,56 @@
             <End Role="Consultorio" EntitySet="Consultorios" />
             <End Role="Especialidad" EntitySet="Especialidads" />
           </AssociationSet>
-        </EntityContainer>
-      </Schema>
+          <EntitySet Name="Inventarios" EntityType="MedControlNetDBModel.Inventario" />
+          <AssociationSet Name="FK_Inventario_ConsultorioID" Association="MedControlNetDBModel.FK_Inventario_ConsultorioID">
+            <End Role="Consultorio" EntitySet="Consultorios" />
+            <End Role="Inventario" EntitySet="Inventarios" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Inventario_EspecialidadID" Association="MedControlNetDBModel.FK_Inventario_EspecialidadID">
+            <End Role="Especialidad" EntitySet="Especialidads" />
+            <End Role="Inventario" EntitySet="Inventarios" />
+          </AssociationSet>
+          </EntityContainer>
+        <EntityType Name="Inventario">
+          <Key>
+            <PropertyRef Name="InventarioID" />
+          </Key>
+          <Property Name="InventarioID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NumeroActivo" Type="Int32" />
+          <Property Name="Nombre" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="Serie" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="FechaDeCompra" Type="DateTime" Precision="3" />
+          <Property Name="EspecialidadID" Type="Int32" />
+          <Property Name="ConsultorioID" Type="Int32" />
+          <NavigationProperty Name="Consultorio" Relationship="MedControlNetDBModel.FK_Inventario_ConsultorioID" FromRole="Inventario" ToRole="Consultorio" />
+          <NavigationProperty Name="Especialidad" Relationship="MedControlNetDBModel.FK_Inventario_EspecialidadID" FromRole="Inventario" ToRole="Especialidad" />
+        </EntityType>
+        <Association Name="FK_Inventario_ConsultorioID">
+          <End Type="MedControlNetDBModel.Consultorio" Role="Consultorio" Multiplicity="0..1" />
+          <End Type="MedControlNetDBModel.Inventario" Role="Inventario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Consultorio">
+              <PropertyRef Name="ConsultorioID" />
+            </Principal>
+            <Dependent Role="Inventario">
+              <PropertyRef Name="ConsultorioID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Inventario_EspecialidadID">
+          <End Type="MedControlNetDBModel.Especialidad" Role="Especialidad" Multiplicity="0..1" />
+          <End Type="MedControlNetDBModel.Inventario" Role="Inventario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Especialidad">
+              <PropertyRef Name="EspecialidadID" />
+            </Principal>
+            <Dependent Role="Inventario">
+              <PropertyRef Name="EspecialidadID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -325,6 +421,20 @@
               <ScalarProperty Name="EspecialidadID" ColumnName="EspecialidadID" />
             </EndProperty>
           </AssociationSetMapping>
+          <EntitySetMapping Name="Inventarios">
+            <EntityTypeMapping TypeName="MedControlNetDBModel.Inventario">
+              <MappingFragment StoreEntitySet="Inventario">
+                <ScalarProperty Name="ConsultorioID" ColumnName="ConsultorioID" />
+                <ScalarProperty Name="EspecialidadID" ColumnName="EspecialidadID" />
+                <ScalarProperty Name="FechaDeCompra" ColumnName="FechaDeCompra" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="Serie" ColumnName="Serie" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="NumeroActivo" ColumnName="NumeroActivo" />
+                <ScalarProperty Name="InventarioID" ColumnName="InventarioID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

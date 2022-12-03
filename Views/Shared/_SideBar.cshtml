@@ -12,6 +12,9 @@
         @Html.ActionLink("Gestión de Especialistas", "Index", "Especialistas", new { }, new { @class = $"nav-link {(selected == "Especialistas/Index" ? "active" : "")}" })
     </li>
     <li class="nav-item">
+        @Html.ActionLink("Gestión de Inventario", "Index", "Inventarios", new { }, new { @class = $"nav-link {(selected == "Inventarios/Index" ? "active" : "")}" })
+    </li>
+    <li class="nav-item">
         @Html.ActionLink("Gestión de Consultorios", "Index", "Consultorios", new { }, new { @class = $"nav-link {(selected == "Consultorios/Index" ? "active" : "")}" })
     </li>
     <hr />

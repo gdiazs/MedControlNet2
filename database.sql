@@ -137,6 +137,40 @@ IF NOT EXISTS (SELECT * FROM sysobjects WHERE name = 'Cita')
 	GO
 GO
 
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name = 'Inventario')
+	CREATE TABLE dbo.Inventario
+	(
+		InventarioID INT IDENTITY(1,1),
+		NumeroActivo INT, 
+		Nombre VARCHAR(30),
+		Serie VARCHAR(30),
+		Descripcion VARCHAR(200),
+		FechaDeCompra DATETIME,
+		EspecialidadID INT,
+		ConsultorioID INT,
+
+		CONSTRAINT PK_Inventario PRIMARY KEY CLUSTERED 
+		(
+			InventarioID
+		),
+		CONSTRAINT FK_Inventario_EspecialidadID FOREIGN KEY 
+		(
+			EspecialidadID
+
+		) REFERENCES dbo.Especialidad (
+			EspecialidadID
+		),
+		CONSTRAINT FK_Inventario_ConsultorioID FOREIGN KEY 
+		(
+			ConsultorioID
+
+		) REFERENCES dbo.Consultorio (
+			ConsultorioID
+		)
+	)
+	GO
+GO
+
 
 INSERT INTO Consultorio
 		(NumeroConsultorio)

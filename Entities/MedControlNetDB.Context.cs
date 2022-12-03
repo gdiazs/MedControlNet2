@@ -30,5 +30,6 @@ namespace MedControlNet.Entities
         public virtual DbSet<Especialidad> Especialidads { get; set; }
         public virtual DbSet<Medico> Medicos { get; set; }
         public virtual DbSet<Paciente> Pacientes { get; set; }
+        public virtual DbSet<Inventario> Inventarios { get; set; }
     }
 }

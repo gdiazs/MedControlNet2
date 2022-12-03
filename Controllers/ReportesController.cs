@@ -50,15 +50,16 @@ namespace MedControlNet.Controllers
                     var vistaPacientes = pacientes.Select(paciente => paciente.Identificacion + " - " + paciente.Nombre).ToList();
                     Response.Write(JsonConvert.SerializeObject(vistaPacientes));
                     break;
+
                 case "medicos":
-                    var medicos = _reportesServicio.ObtenerMedicosQueAtendieron();
-                    var vistaMedicos = medicos.ToList();
-                    Response.Write(JsonConvert.SerializeObject(vistaMedicos));
+                    Response.Write(JsonConvert.SerializeObject(_reportesServicio.ObtenerMedicosQueAtendieron().ToList()));
                     break;
+
                 case "citas":
                     var citas = _reportesServicio.ObtenerCitasAtendidasSinFormato();
                     Response.Write(JsonConvert.SerializeObject(citas.ToList()));
                     break;
+
                 case "consultorios":
                     var consultorios = _reportesServicio.ObtenerListaEspecialidadesPorConsultorios()
                         .Select(consultorio => new ConsultoriosReporteJson()
@@ -68,6 +69,7 @@ namespace MedControlNet.Controllers
                         });
                     Response.Write(JsonConvert.SerializeObject(consultorios.ToList()));
                     break;
+
                 case "conteo":
 
                     Response.Write(JsonConvert.SerializeObject(new
@@ -76,6 +78,7 @@ namespace MedControlNet.Controllers
                         ConteoCitas = citasAtendidas.Count
                     }));
                     break;
+
                 case "estadisticas":
 
                     Response.Write(JsonConvert.SerializeObject(new

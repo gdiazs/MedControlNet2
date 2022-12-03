@@ -1,0 +1,80 @@
+﻿@model IEnumerable<MedControlNet.Models.InventarioModelo>
+
+<div class="row mt-5 ">
+
+    <div class="col-10">
+        <div class="text-end">
+            @Html.ActionLink("Agregar nuevo equipo médico", "Create", new { },  new { @class="btn btn-primary mb-3" })
+
+        </div>
+        <div class="card">
+            <div class="card-header">
+                Todos los equipos
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.NumeroActivo)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Nombre)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Serie)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Descripcion)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FechaDeCompra)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Consultorio)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Especialidad)
+                        </th>
+                        <th></th>
+                    </tr>
+
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.NumeroActivo)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Nombre)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Serie)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Descripcion)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.FechaDeCompra)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Consultorio)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Especialidad)
+                            </td>
+
+                            <td>
+                                <div class="flex-fill">
+                                    @Html.ActionLink("Edit", "Edit", new {  id = item.InventarioID  }, new { @class = "btn btn-secondary" })
+                                    @Html.ActionLink("Delete", "Delete", new { id = item.InventarioID }, new { @class = "btn btn-danger" })
+                                </div>
+
+                            </td>
+                        </tr>
+                    }
+
+                </table>
+
+            </div>
+        </div>
+    </div>

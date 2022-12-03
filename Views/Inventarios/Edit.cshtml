@@ -1,0 +1,104 @@
+﻿@model MedControlNet.Models.InventarioModelo
+
+<div class="row mt-5">
+
+    <div class="col-8">
+        <div class="card">
+            <div class="card-header">
+                <h4>Editar equipo médico</h4>
+
+            </div>
+            <div class="card-body">
+
+                @using (Html.BeginForm())
+                {
+                    @Html.HiddenFor(model => model.InventarioID, htmlAttributes: new { })
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.NumeroActivo, htmlAttributes: new { @class = "control-label" })
+                        <div>
+                            @Html.EditorFor(model => model.NumeroActivo, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.NumeroActivo, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group mt-3">
+                        @Html.LabelFor(model => model.Nombre, htmlAttributes: new { @class = "control-label" })
+                        <div>
+                            @Html.EditorFor(model => model.Nombre, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Nombre, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group  mt-3" ">
+                        @Html.LabelFor(model => model.Serie, htmlAttributes: new { @class = "control-label" })
+                        <div>
+                            @Html.EditorFor(model => model.Serie, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Serie, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group  mt-3" ">
+                        @Html.LabelFor(model => model.Descripcion, htmlAttributes: new { @class = "control-label" })
+                        <div>
+                            @Html.EditorFor(model => model.Descripcion, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Descripcion, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group  mt-3" >
+                        @Html.LabelFor(model => model.FechaDeCompra, htmlAttributes: new { @class = "control-label" })
+                        <div>
+                            @Html.EditorFor(model => model.FechaDeCompra, new { htmlAttributes = new { @class = "form-control", @type = "date" } })
+                            @Html.ValidationMessageFor(model => model.FechaDeCompra, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group mt-3">
+                        @Html.LabelFor(model => model.EspecialidadID, "Especialidad", htmlAttributes: new { @class = "control-label" })
+                        <div>
+                            @Html.DropDownList("Especialidad",
+                                Model.Especialidades.Select(especialidad => new SelectListItem()
+                                {
+                                    Text = especialidad.NombreEspecialidad,
+                                    Value = especialidad.EspecialidadID + ""
+                                })
+                           , new { @class = "form-select", @id = "medicoSelect" })
+
+                        </div>
+                    </div>
+
+                    <div class="form-group mt-3">
+                        @Html.LabelFor(model => model.ConsultorioID, "Consultorio", htmlAttributes: new { @class = "control-label" })
+                        <div>
+                            @Html.DropDownList("Consultorio",
+                                Model.Consultorios.Select(consultorio => new SelectListItem()
+                                {
+                                    Text = consultorio.ConsultorioID + "",
+                                    Value = consultorio.ConsultorioID + ""
+                                })
+                           , new { @class = "form-select", @id = "medicoSelect" })
+                        </div>
+                    </div>
+
+
+                    <div class="form-group  mt-3">
+                        <div class="text-end">
+                            <input type="submit" value="Agregar" class="btn btn-primary" />
+                        </div>
+                    </div>
+
+                }
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="">
+    @Html.ActionLink("Regresar", "Index")
+</div>
