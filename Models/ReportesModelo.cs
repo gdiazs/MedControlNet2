@@ -18,5 +18,7 @@ namespace MedControlNet.Models
         public int ConteoCitas { get; internal set; }
         public decimal PorcentajeEspecialidades { get; internal set; }
         public List<MedicoCitasReporte> PorcentajeDeAtencionPorMedico { get; internal set; }
+
+        public List<Inventario> Activos { set; get; }
     }
 }

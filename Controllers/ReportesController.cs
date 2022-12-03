@@ -87,6 +87,20 @@ namespace MedControlNet.Controllers
                         PorcentajeEspecialidades = _reportesServicio.ObtenerPorcentajeEspecialidades()
                     }));
                     break;
+
+                case "activos":
+
+                    var activos = _reportesServicio.ObtenerReporteDeActivos()
+                        .Select(activo => new ActivosReporteJson()
+                        {
+                            Nombre = activo.Nombre,
+                            Descripcion = activo.Descripcion,
+                            Especialidad = activo.Especialidad.NombreEspecialidad,
+                            Consultorio =  activo.Consultorio.NumeroConsultorio.Value + ""
+
+                        });
+                    Response.Write(JsonConvert.SerializeObject(activos.ToList()));
+                    break;
             }
 
             Response.End();
@@ -106,7 +120,8 @@ namespace MedControlNet.Controllers
                 ConteoIngresos = _reportesServicio.ObtenerConteoIngresos(),
                 ConteoCitas = citasAtendidas.Count,
                 PorcentajeDeAtencionPorMedico = _reportesServicio.ObtenerPorcentajeAtencionPorMedico(),
-                PorcentajeEspecialidades = _reportesServicio.ObtenerPorcentajeEspecialidades()
+                PorcentajeEspecialidades = _reportesServicio.ObtenerPorcentajeEspecialidades(),
+                Activos = _reportesServicio.ObtenerReporteDeActivos()
             };
         }
     }

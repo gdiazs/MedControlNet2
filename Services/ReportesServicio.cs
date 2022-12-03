@@ -68,6 +68,15 @@ namespace MedControlNet.Services
             }
         }
 
+        public List<Inventario> ObtenerReporteDeActivos() {
+            using (var db = new MedControlNetDBEntities())
+            {
+
+                return db.Inventarios.Include("Especialidad").Include("Consultorio").ToList();
+                 
+            }
+        }
+
         public List<Consultorio> ObtenerListaEspecialidadesPorConsultorios()
         {
             using (var db = new MedControlNetDBEntities())

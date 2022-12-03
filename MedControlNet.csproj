@@ -207,6 +207,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\ActivosReporteJson.cs" />
     <Compile Include="Models\CitaFormularioModelo.cs" />
     <Compile Include="Models\CitaModelo.cs" />
     <Compile Include="Models\CitaReporteJson.cs" />

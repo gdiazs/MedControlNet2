@@ -1,6 +1,6 @@
 ﻿@model MedControlNet.Models.ReportesModelo
 
-@{ 
+@{
 
     var fecha = DateTime.Now;
 }
@@ -26,7 +26,7 @@
                         </ul>
                         <a target="_blank" href="/Reportes/ObtenerArchivo?nombre=pacientes">Descargar</a>
                     </div>
-                    
+
                 </div>
             </div>
             <div class="accordion-item">
@@ -160,6 +160,33 @@
                             </div>
                         </div>
                         <a target="_blank" href="/Reportes/ObtenerArchivo?nombre=estadisticas">Descargar</a>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="heading7">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse7" aria-expanded="false" aria-controls="collapse7">
+                        <h6>Activos</h6>
+                    </button>
+                </h2>
+                <div id="collapse7" class="accordion-collapse collapse" aria-labelledby="heading7" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <div>
+
+                            <ul class="list-group">
+                                @foreach (var activo in Model.Activos)
+                                {
+                                    <li class="list-group-item">
+                                        <span class="fw-bold">Nombre:</span> @activo.Nombre <br />
+                                        <span class="fw-bold">Descripción:</span> @activo.Descripcion <br />
+                                        <span class="fw-bold">Especialidad:</span> @activo.Especialidad.NombreEspecialidad <br />
+                                        <span class="fw-bold">Consultorio:</span> @activo.Consultorio.NumeroConsultorio <br />
+
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                        <a target="_blank" href="/Reportes/ObtenerArchivo?nombre=activos">Descargar</a>
                     </div>
                 </div>
             </div>
