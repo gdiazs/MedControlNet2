@@ -207,19 +207,19 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\ActivosReporteJson.cs" />
+    <Compile Include="Models\json\ActivosReporteJson.cs" />
     <Compile Include="Models\CitaFormularioModelo.cs" />
     <Compile Include="Models\CitaModelo.cs" />
-    <Compile Include="Models\CitaReporteJson.cs" />
+    <Compile Include="Models\json\CitaReporteJson.cs" />
     <Compile Include="Models\ConsultorioModelo.cs" />
     <Compile Include="Models\ConsultoriosEspecialidadModelo.cs" />
-    <Compile Include="Models\ConsultoriosReporteJson.cs" />
+    <Compile Include="Models\json\ConsultoriosReporteJson.cs" />
     <Compile Include="Models\EspecialidadModel.cs" />
     <Compile Include="Models\InventarioModelo.cs" />
     <Compile Include="Models\MedicoCitasReporte.cs" />
     <Compile Include="Models\MedicoModelo.cs" />
     <Compile Include="Models\MensajeError.cs" />
-    <Compile Include="Models\PacientesReporteJson.cs" />
+    <Compile Include="Models\json\PacientesReporteJson.cs" />
     <Compile Include="Models\ReportesModelo.cs" />
     <Compile Include="Models\UnityResolver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

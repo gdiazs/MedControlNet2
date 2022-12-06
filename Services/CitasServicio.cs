@@ -22,19 +22,32 @@ namespace MedControlNet.Services
                 };
 
 
-
                 var nuevaCita = new Cita()
                 {
                     Costo = modelo.Monto,
                     HoraCita = modelo.FechaCita,
                     MedicoID = int.Parse(modelo.MedicoEspecialista),
                     Paciente = nuevoPaciente,
+                    ConsultorioID = int.Parse(modelo.ConsultorioId)
                 };
 
-                db.Citas.Add(nuevaCita);
-                db.SaveChanges();
+                if (EstaDisponibleElEspacio(modelo)) {
+                    db.Citas.Add(nuevaCita);
+                    db.SaveChanges();
+                }
+
+
             
             }
+        }
+
+        private bool EstaDisponibleElEspacio(CitaFormularioModelo modelo)
+        {
+
+
+
+
+            return true;
         }
     }
 }

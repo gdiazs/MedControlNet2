@@ -25,11 +25,11 @@ namespace MedControlNet.Entities
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<Cita> Citas { get; set; }
         public virtual DbSet<Consultorio> Consultorios { get; set; }
         public virtual DbSet<Especialidad> Especialidads { get; set; }
         public virtual DbSet<Medico> Medicos { get; set; }
         public virtual DbSet<Paciente> Pacientes { get; set; }
         public virtual DbSet<Inventario> Inventarios { get; set; }
+        public virtual DbSet<Cita> Citas { get; set; }
     }
 }

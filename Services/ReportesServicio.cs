@@ -130,14 +130,18 @@ namespace MedControlNet.Services
                 foreach (var medico in medicos)
                 {
                     decimal citasAtendidas = medico.Citas.Count();
-                    decimal result = (citasAtendidas / conteoCitas) * 100;
 
-                    medicoCitas.Add(new MedicoCitasReporte
-                    {
-                        Medico = medico.Nombre,
-                        PorcenajeAtencion = result
+                    if (conteoCitas > 0 && citasAtendidas > 0) {
+                        decimal result = (citasAtendidas / conteoCitas) * 100;
 
-                    });
+                        medicoCitas.Add(new MedicoCitasReporte
+                        {
+                            Medico = medico.Nombre,
+                            PorcenajeAtencion = result
+
+                        });
+                    }
+
                 }
 
                 return medicoCitas;

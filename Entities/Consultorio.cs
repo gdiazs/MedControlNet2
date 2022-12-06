@@ -19,6 +19,7 @@ namespace MedControlNet.Entities
         {
             this.Especialidads = new HashSet<Especialidad>();
             this.Inventarios = new HashSet<Inventario>();
+            this.Citas = new HashSet<Cita>();
         }
     
         public int ConsultorioID { get; set; }
@@ -28,5 +29,7 @@ namespace MedControlNet.Entities
         public virtual ICollection<Especialidad> Especialidads { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Inventario> Inventarios { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Cita> Citas { get; set; }
     }
 }

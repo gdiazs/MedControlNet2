@@ -19,7 +19,9 @@ namespace MedControlNet.Entities
         public int MedicoID { get; set; }
         public Nullable<System.DateTime> HoraCita { get; set; }
         public Nullable<decimal> Costo { get; set; }
+        public int ConsultorioID { get; set; }
     
+        public virtual Consultorio Consultorio { get; set; }
         public virtual Medico Medico { get; set; }
         public virtual Paciente Paciente { get; set; }
     }

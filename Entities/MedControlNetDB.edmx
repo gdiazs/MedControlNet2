@@ -10,12 +10,14 @@
             <PropertyRef Name="CitaID" />
             <PropertyRef Name="PacienteID" />
             <PropertyRef Name="MedicoID" />
+            <PropertyRef Name="ConsultorioID" />
           </Key>
           <Property Name="CitaID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="PacienteID" Type="int" Nullable="false" />
           <Property Name="MedicoID" Type="int" Nullable="false" />
           <Property Name="HoraCita" Type="datetime" />
           <Property Name="Costo" Type="decimal" Precision="19" Scale="4" />
+          <Property Name="ConsultorioID" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Consultorio">
           <Key>
@@ -70,6 +72,18 @@
           <Property Name="Identificacion" Type="varchar" MaxLength="30" />
           <Property Name="Nombre" Type="varchar" MaxLength="255" />
         </EntityType>
+        <Association Name="FK_Cita_ConsultorioID">
+          <End Role="Consultorio" Type="Self.Consultorio" Multiplicity="1" />
+          <End Role="Cita" Type="Self.Cita" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Consultorio">
+              <PropertyRef Name="ConsultorioID" />
+            </Principal>
+            <Dependent Role="Cita">
+              <PropertyRef Name="ConsultorioID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Cita_MedicoID">
           <End Role="Medico" Type="Self.Medico" Multiplicity="1" />
           <End Role="Cita" Type="Self.Cita" Multiplicity="*" />
@@ -162,6 +176,10 @@
           <EntitySet Name="Inventario" EntityType="Self.Inventario" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Medico" EntityType="Self.Medico" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Paciente" EntityType="Self.Paciente" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Cita_ConsultorioID" Association="Self.FK_Cita_ConsultorioID">
+            <End Role="Consultorio" EntitySet="Consultorio" />
+            <End Role="Cita" EntitySet="Cita" />
+          </AssociationSet>
           <AssociationSet Name="FK_Cita_MedicoID" Association="Self.FK_Cita_MedicoID">
             <End Role="Medico" EntitySet="Medico" />
             <End Role="Cita" EntitySet="Cita" />
@@ -195,20 +213,6 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="MedControlNetDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="Cita">
-          <Key>
-            <PropertyRef Name="CitaID" />
-            <PropertyRef Name="PacienteID" />
-            <PropertyRef Name="MedicoID" />
-          </Key>
-          <Property Name="CitaID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="PacienteID" Type="Int32" Nullable="false" />
-          <Property Name="MedicoID" Type="Int32" Nullable="false" />
-          <Property Name="HoraCita" Type="DateTime" Precision="3" />
-          <Property Name="Costo" Type="Decimal" Precision="19" Scale="4" />
-          <NavigationProperty Name="Medico" Relationship="Self.FK_Cita_MedicoID" FromRole="Cita" ToRole="Medico" />
-          <NavigationProperty Name="Paciente" Relationship="Self.FK_Cita_PacienteID" FromRole="Cita" ToRole="Paciente" />
-        </EntityType>
         <EntityType Name="Consultorio">
           <Key>
             <PropertyRef Name="ConsultorioID" />
@@ -217,6 +221,7 @@
           <Property Name="NumeroConsultorio" Type="Int32" />
           <NavigationProperty Name="Especialidads" Relationship="Self.ConsultorioEspecialidad" FromRole="Consultorio" ToRole="Especialidad" />
           <NavigationProperty Name="Inventarios" Relationship="MedControlNetDBModel.FK_Inventario_ConsultorioID" FromRole="Consultorio" ToRole="Inventario" />
+          <NavigationProperty Name="Citas" Relationship="MedControlNetDBModel.FK_Cita_ConsultorioID" FromRole="Consultorio" ToRole="Cita" />
         </EntityType>
         <EntityType Name="Especialidad">
           <Key>
@@ -237,8 +242,8 @@
           <Property Name="Nombre" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="EsTemporal" Type="Boolean" />
           <Property Name="EspecialidadID" Type="Int32" />
-          <NavigationProperty Name="Citas" Relationship="Self.FK_Cita_MedicoID" FromRole="Medico" ToRole="Cita" />
           <NavigationProperty Name="Especialidad" Relationship="Self.FK_Medico_EspecialidadID" FromRole="Medico" ToRole="Especialidad" />
+          <NavigationProperty Name="Citas" Relationship="MedControlNetDBModel.FK_Cita_MedicoID" FromRole="Medico" ToRole="Cita" />
         </EntityType>
         <EntityType Name="Paciente">
           <Key>
@@ -247,32 +252,8 @@
           <Property Name="PacienteID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Identificacion" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Name="Nombre" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Citas" Relationship="Self.FK_Cita_PacienteID" FromRole="Paciente" ToRole="Cita" />
+          <NavigationProperty Name="Citas" Relationship="MedControlNetDBModel.FK_Cita_PacienteID" FromRole="Paciente" ToRole="Cita" />
         </EntityType>
-        <Association Name="FK_Cita_MedicoID">
-          <End Role="Medico" Type="Self.Medico" Multiplicity="1" />
-          <End Role="Cita" Type="Self.Cita" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Medico">
-              <PropertyRef Name="MedicoID" />
-            </Principal>
-            <Dependent Role="Cita">
-              <PropertyRef Name="MedicoID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Cita_PacienteID">
-          <End Role="Paciente" Type="Self.Paciente" Multiplicity="1" />
-          <End Role="Cita" Type="Self.Cita" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Paciente">
-              <PropertyRef Name="PacienteID" />
-            </Principal>
-            <Dependent Role="Cita">
-              <PropertyRef Name="PacienteID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Medico_EspecialidadID">
           <End Role="Especialidad" Type="Self.Especialidad" Multiplicity="0..1" />
           <End Role="Medico" Type="Self.Medico" Multiplicity="*" />
@@ -290,19 +271,10 @@
           <End Role="Especialidad" Type="Self.Especialidad" Multiplicity="*" />
         </Association>
         <EntityContainer Name="MedControlNetDBEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Citas" EntityType="Self.Cita" />
           <EntitySet Name="Consultorios" EntityType="Self.Consultorio" />
           <EntitySet Name="Especialidads" EntityType="Self.Especialidad" />
           <EntitySet Name="Medicos" EntityType="Self.Medico" />
           <EntitySet Name="Pacientes" EntityType="Self.Paciente" />
-          <AssociationSet Name="FK_Cita_MedicoID" Association="Self.FK_Cita_MedicoID">
-            <End Role="Medico" EntitySet="Medicos" />
-            <End Role="Cita" EntitySet="Citas" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Cita_PacienteID" Association="Self.FK_Cita_PacienteID">
-            <End Role="Paciente" EntitySet="Pacientes" />
-            <End Role="Cita" EntitySet="Citas" />
-          </AssociationSet>
           <AssociationSet Name="FK_Medico_EspecialidadID" Association="Self.FK_Medico_EspecialidadID">
             <End Role="Especialidad" EntitySet="Especialidads" />
             <End Role="Medico" EntitySet="Medicos" />
@@ -319,6 +291,19 @@
           <AssociationSet Name="FK_Inventario_EspecialidadID" Association="MedControlNetDBModel.FK_Inventario_EspecialidadID">
             <End Role="Especialidad" EntitySet="Especialidads" />
             <End Role="Inventario" EntitySet="Inventarios" />
+          </AssociationSet>
+          <EntitySet Name="Citas" EntityType="MedControlNetDBModel.Cita" />
+          <AssociationSet Name="FK_Cita_ConsultorioID" Association="MedControlNetDBModel.FK_Cita_ConsultorioID">
+            <End Role="Consultorio" EntitySet="Consultorios" />
+            <End Role="Cita" EntitySet="Citas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cita_MedicoID" Association="MedControlNetDBModel.FK_Cita_MedicoID">
+            <End Role="Medico" EntitySet="Medicos" />
+            <End Role="Cita" EntitySet="Citas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cita_PacienteID" Association="MedControlNetDBModel.FK_Cita_PacienteID">
+            <End Role="Paciente" EntitySet="Pacientes" />
+            <End Role="Cita" EntitySet="Citas" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="Inventario">
@@ -360,23 +345,65 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Cita">
+          <Key>
+            <PropertyRef Name="CitaID" />
+            <PropertyRef Name="PacienteID" />
+            <PropertyRef Name="MedicoID" />
+            <PropertyRef Name="ConsultorioID" />
+          </Key>
+          <Property Name="CitaID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PacienteID" Type="Int32" Nullable="false" />
+          <Property Name="MedicoID" Type="Int32" Nullable="false" />
+          <Property Name="HoraCita" Type="DateTime" Precision="3" />
+          <Property Name="Costo" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="ConsultorioID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Consultorio" Relationship="MedControlNetDBModel.FK_Cita_ConsultorioID" FromRole="Cita" ToRole="Consultorio" />
+          <NavigationProperty Name="Medico" Relationship="MedControlNetDBModel.FK_Cita_MedicoID" FromRole="Cita" ToRole="Medico" />
+          <NavigationProperty Name="Paciente" Relationship="MedControlNetDBModel.FK_Cita_PacienteID" FromRole="Cita" ToRole="Paciente" />
+        </EntityType>
+        <Association Name="FK_Cita_ConsultorioID">
+          <End Type="MedControlNetDBModel.Consultorio" Role="Consultorio" Multiplicity="1" />
+          <End Type="MedControlNetDBModel.Cita" Role="Cita" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Consultorio">
+              <PropertyRef Name="ConsultorioID" />
+            </Principal>
+            <Dependent Role="Cita">
+              <PropertyRef Name="ConsultorioID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cita_MedicoID">
+          <End Type="MedControlNetDBModel.Medico" Role="Medico" Multiplicity="1" />
+          <End Type="MedControlNetDBModel.Cita" Role="Cita" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Medico">
+              <PropertyRef Name="MedicoID" />
+            </Principal>
+            <Dependent Role="Cita">
+              <PropertyRef Name="MedicoID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cita_PacienteID">
+          <End Type="MedControlNetDBModel.Paciente" Role="Paciente" Multiplicity="1" />
+          <End Type="MedControlNetDBModel.Cita" Role="Cita" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Paciente">
+              <PropertyRef Name="PacienteID" />
+            </Principal>
+            <Dependent Role="Cita">
+              <PropertyRef Name="PacienteID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="MedControlNetDBModelStoreContainer" CdmEntityContainer="MedControlNetDBEntities">
-          <EntitySetMapping Name="Citas">
-            <EntityTypeMapping TypeName="MedControlNetDBModel.Cita">
-              <MappingFragment StoreEntitySet="Cita">
-                <ScalarProperty Name="CitaID" ColumnName="CitaID" />
-                <ScalarProperty Name="PacienteID" ColumnName="PacienteID" />
-                <ScalarProperty Name="MedicoID" ColumnName="MedicoID" />
-                <ScalarProperty Name="HoraCita" ColumnName="HoraCita" />
-                <ScalarProperty Name="Costo" ColumnName="Costo" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Consultorios">
             <EntityTypeMapping TypeName="MedControlNetDBModel.Consultorio">
               <MappingFragment StoreEntitySet="Consultorio">
@@ -432,6 +459,18 @@
                 <ScalarProperty Name="Nombre" ColumnName="Nombre" />
                 <ScalarProperty Name="NumeroActivo" ColumnName="NumeroActivo" />
                 <ScalarProperty Name="InventarioID" ColumnName="InventarioID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Citas">
+            <EntityTypeMapping TypeName="MedControlNetDBModel.Cita">
+              <MappingFragment StoreEntitySet="Cita">
+                <ScalarProperty Name="ConsultorioID" ColumnName="ConsultorioID" />
+                <ScalarProperty Name="Costo" ColumnName="Costo" />
+                <ScalarProperty Name="HoraCita" ColumnName="HoraCita" />
+                <ScalarProperty Name="MedicoID" ColumnName="MedicoID" />
+                <ScalarProperty Name="PacienteID" ColumnName="PacienteID" />
+                <ScalarProperty Name="CitaID" ColumnName="CitaID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -3,12 +3,13 @@ using MedControlNet.Models;
 using MedControlNet.Services;
 using NLog;
 using System;
-using System.Collections.Generic;
 using System.Data.Entity.Core.Common.CommandTrees.ExpressionBuilder;
-using System.Data.Entity.Core.Metadata.Edm;
+
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.WebPages.Html;
+using SelectListItem = System.Web.Mvc.SelectListItem;
 
 namespace MedControlNet.Controllers
 {
@@ -27,6 +28,9 @@ namespace MedControlNet.Controllers
 
         public ActionResult Index()
         {
+
+            ModelState.Merge(TempData["modelState"] == null ? ModelState : (System.Web.Mvc.ModelStateDictionary)TempData["modelState"]);
+
             var citaFormulario = TempData["form"] != null ? (CitaFormularioModelo)TempData["form"] : new CitaFormularioModelo();
 
             var medicosLista = _medicosServicio.ObtenerMedicos();
@@ -60,45 +64,49 @@ namespace MedControlNet.Controllers
             return View(citaModelo);
         }
 
-        private string ObtenerEspecialidades(Consultorio consultorio)
-        {
-            var especialidades = consultorio.Especialidads.Select(esp => esp.NombreEspecialidad).ToList();
-            return $"{consultorio.NumeroConsultorio} ({string.Join(", ", especialidades)})";
-
-        }
 
         [HttpPost]
         public ActionResult Index(CitaFormularioModelo citaModelo)
         {
-            var fechaSeleccionada = citaModelo.FechaCita;
 
-
-            if (NoEsHoraDeAlmuerzo(fechaSeleccionada))
+            if (ModelState.IsValid)
             {
-                TempData["MensajeError"] = $"La fecha seleccionada '{citaModelo.FechaCita}' no es válida. La hora de almuerzo es de las 12pm a 1pm ";
-                TempData["form"] = citaModelo;
-                return  RedirectToAction("Index");
-            }
-
-            if (NoEsHorarioValido(fechaSeleccionada))
-            {
-                TempData["MensajeError"] = $"La fecha seleccionada '{citaModelo.FechaCita}' no es válida. El horario de atención 8am a 5pm. ";
-                TempData["form"] = citaModelo;
-                return  RedirectToAction("Index");
-            }
-
-            try
-            {
-                TempData["form"] = null;
-                _citasServicio.AgregarCita(citaModelo);
-                TempData["MensajeExito"] = $"La cita de {citaModelo.NombrePaciente} con cédula {citaModelo.CedulaPaciente} se ha agendado satisfactoriamente";
-            }
-            catch (Exception ex) {
-                TempData["MensajeExito"] = null;
-                Logger.Error("Error al agregar nueva cita", ex);
-            }
+                var fechaSeleccionada = citaModelo.FechaCita;
 
 
+                if (NoEsHoraDeAlmuerzo(fechaSeleccionada))
+                {
+                    TempData["MensajeError"] = $"La fecha seleccionada '{citaModelo.FechaCita}' no es válida. La hora de almuerzo es de las 12pm a 1pm ";
+                    TempData["form"] = citaModelo;
+                    return RedirectToAction("Index");
+                }
+
+                if (NoEsHorarioValido(fechaSeleccionada))
+                {
+                    TempData["MensajeError"] = $"La fecha seleccionada '{citaModelo.FechaCita}' no es válida. El horario de atención 8am a 5pm. ";
+                    TempData["form"] = citaModelo;
+                    return RedirectToAction("Index");
+                }
+
+                try
+                {
+                    TempData["form"] = null;
+                    _citasServicio.AgregarCita(citaModelo);
+                    TempData["MensajeExito"] = $"La cita de {citaModelo.NombrePaciente} con cédula {citaModelo.CedulaPaciente} se ha agendado satisfactoriamente";
+                }
+                catch (Exception ex)
+                {
+                    TempData["MensajeExito"] = null;
+                    Logger.Error("Error al agregar nueva cita", ex);
+                }
+
+
+                return RedirectToAction("Index");
+            }
+
+            TempData["MensajeError"] = "Hay campos con errores";
+            TempData["form"] = citaModelo;
+            TempData["modelState"] = ModelState;
             return RedirectToAction("Index");
         }
 
@@ -110,12 +118,10 @@ namespace MedControlNet.Controllers
 
         private bool NoEsHorarioValido(DateTime fechaSeleccionada)
         {
-            var now = DateTime.Now;
 
-            var inicio = new DateTime(now.Year, now.Month, now.Day, 08, 00, 00);
-            var fin = new DateTime(now.Year, now.Month, now.Day, 16, 30, 00);
 
-            return !(fechaSeleccionada >= inicio && fechaSeleccionada <= fin);
+            return !(fechaSeleccionada.Hour >= 9 && fechaSeleccionada.Hour < 17);
         }
+
     }
 }

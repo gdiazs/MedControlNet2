@@ -26,8 +26,8 @@ namespace MedControlNet.Entities
         public Nullable<bool> EsTemporal { get; set; }
         public Nullable<int> EspecialidadID { get; set; }
     
+        public virtual Especialidad Especialidad { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Cita> Citas { get; set; }
-        public virtual Especialidad Especialidad { get; set; }
     }
 }
