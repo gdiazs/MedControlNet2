@@ -27,7 +27,8 @@ namespace MedControlNet.WebApi
         }
 
         [HttpGet]
-        public List<MedicoModelo> Obtener() {
+        public List<MedicoModelo> Obtener()
+        {
 
             Logger.Info("Obteniendo todos los médicos");
 
@@ -39,7 +40,8 @@ namespace MedControlNet.WebApi
         }
 
         [HttpPost]
-        public HttpResponseMessage Agregar(MedicoModelo medico) {
+        public HttpResponseMessage Agregar(MedicoModelo medico)
+        {
             Logger.Info($"Se va a agregar el siguiente médico {medico.Nombre}");
 
             try
@@ -50,18 +52,21 @@ namespace MedControlNet.WebApi
                         .CreateResponse<MedicoModelo>(HttpStatusCode.OK,
                         _medicosServicios.AgregarMedico(medico));
                 }
-                else {
+                else
+                {
                     return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
                 }
             }
-            catch (MedicoExisteExcepcion  ex) {
+            catch (MedicoExisteExcepcion ex)
+            {
                 var mensajeError = new MensajeError()
                 {
                     CodigoHttp = HttpStatusCode.BadRequest,
                     Mensaje = ex.Message
                 };
-                throw new HttpResponseException( new HttpResponseMessage() { 
-                    Content = new StringContent( JsonConvert.SerializeObject(mensajeError)),
+                throw new HttpResponseException(new HttpResponseMessage()
+                {
+                    Content = new StringContent(JsonConvert.SerializeObject(mensajeError)),
                     StatusCode = HttpStatusCode.BadRequest
                 });
             }

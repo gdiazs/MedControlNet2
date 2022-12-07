@@ -9,9 +9,11 @@ namespace MedControlNet.Services
 {
     public class CitasServicio
     {
-        public void AgregarCita(CitaFormularioModelo modelo) {
+        public void AgregarCita(CitaFormularioModelo modelo)
+        {
 
-            using (var db = new MedControlNetDBEntities()) {
+            using (var db = new MedControlNetDBEntities())
+            {
 
                 //var pacienteGuardado = db.Pacientes.Where(p => p.Identificacion.Equals(modelo.CedulaPaciente));
 
@@ -31,21 +33,41 @@ namespace MedControlNet.Services
                     ConsultorioID = int.Parse(modelo.ConsultorioId)
                 };
 
-                if (EstaDisponibleElEspacio(modelo)) {
+                if (EstaDisponibleElEspacio(modelo))
+                {
                     db.Citas.Add(nuevaCita);
                     db.SaveChanges();
                 }
+                else
+                {
+
+                    throw new CitaExisteExcepcion($"El consultorio {modelo.ConsultorioId} ya se encuentra ocupado en esa fecha");
+                }
 
 
-            
+
             }
         }
 
         private bool EstaDisponibleElEspacio(CitaFormularioModelo modelo)
         {
+            var fechaDeNuevaCita = modelo.FechaCita.ToString("yyyy-MM-dd");
 
 
+            using (var db = new MedControlNetDBEntities())
+            {
+                int consultorioId = int.Parse(modelo.ConsultorioId);
+                var citasAgendadas = db.Citas
+                    .Where(cita => cita.ConsultorioID == consultorioId).ToList().Where(cita => cita.HoraCita.Value.Date == modelo.FechaCita.Date).ToList();
 
+                var citasMismaHora = citasAgendadas.Where( cita => cita.HoraCita.Value.Hour == modelo.FechaCita.Hour).ToList();
+
+                if (citasMismaHora.Any()) {
+                    return false;
+                }
+
+
+            }
 
             return true;
         }

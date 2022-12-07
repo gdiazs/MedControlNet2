@@ -94,12 +94,13 @@ namespace MedControlNet.Controllers
                     _citasServicio.AgregarCita(citaModelo);
                     TempData["MensajeExito"] = $"La cita de {citaModelo.NombrePaciente} con cédula {citaModelo.CedulaPaciente} se ha agendado satisfactoriamente";
                 }
-                catch (Exception ex)
+                catch (CitaExisteExcepcion ex)
                 {
-                    TempData["MensajeExito"] = null;
-                    Logger.Error("Error al agregar nueva cita", ex);
-                }
 
+                    TempData["MensajeError"] = ex.Message;
+                    TempData["form"] = citaModelo;
+                    TempData["modelState"] = ModelState;
+                }
 
                 return RedirectToAction("Index");
             }

@@ -74,7 +74,7 @@
 
                             <div>
                                 <input type="datetime-local" id="fechaCita"
-                                       name="fechaCita" class="form-control" value="@Model.CitaFormularioModelo.FechaCita.ToString("yyyy-MM-ddTHH:mm:ss")">
+                                       name="fechaCita" class="form-control" value="@Model.CitaFormularioModelo.FechaCita.ToString("yyyy-MM-dd'T'HH:mm:ss")">
                                 <span class="text-danger">
                                     @Html.ValidationMessage("fechaCita", "")
                                 </span>
