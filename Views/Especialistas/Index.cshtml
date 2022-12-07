@@ -163,7 +163,12 @@
 
         }).catch((err) => {
             medicosViewModel.esError(true);
-            medicosViewModel.mensajeError(err.Mensaje)
+
+            medicosViewModel.mensajeError("Ha ocurrido un error inesperado")
+            if (err.Mensaje) {
+                medicosViewModel.mensajeError(err.Mensaje)
+            }
+            
             medicosViewModel.limpiarNuevoMedico();
             document.querySelector("#closeBtn").click();
         });

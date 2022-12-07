@@ -1,12 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using System.Web.Http.Results;
@@ -44,14 +39,22 @@ namespace MedControlNet.WebApi
         }
 
         [HttpPost]
-        public MedicoModelo Agregar(MedicoModelo medico) {
+        public HttpResponseMessage Agregar(MedicoModelo medico) {
             Logger.Info($"Se va a agregar el siguiente médico {medico.Nombre}");
 
             try
             {
-                return _medicosServicios.AgregarMedico(medico);
+                if (ModelState.IsValid)
+                {
+                    return Request
+                        .CreateResponse<MedicoModelo>(HttpStatusCode.OK,
+                        _medicosServicios.AgregarMedico(medico));
+                }
+                else {
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
+                }
             }
-            catch (MedicoExisteExcepcion ex) {
+            catch (MedicoExisteExcepcion  ex) {
                 var mensajeError = new MensajeError()
                 {
                     CodigoHttp = HttpStatusCode.BadRequest,
